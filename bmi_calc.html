@@ -4320,10 +4320,30 @@ function _Browser_load(url)
 		}
 	}));
 }
-var elm$core$Basics$apR = F2(
-	function (x, f) {
-		return f(x);
+var author$project$Main$initialModel = {height: '175', weight: '75'};
+var author$project$Main$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 'Calc':
+				return model;
+			case 'Change_height':
+				var s = msg.a;
+				return _Utils_update(
+					model,
+					{height: s});
+			default:
+				var s = msg.a;
+				return _Utils_update(
+					model,
+					{weight: s});
+		}
 	});
+var author$project$Main$Change_height = function (a) {
+	return {$: 'Change_height', a: a};
+};
+var author$project$Main$Change_weight = function (a) {
+	return {$: 'Change_weight', a: a};
+};
 var elm$core$Basics$EQ = {$: 'EQ'};
 var elm$core$Basics$GT = {$: 'GT'};
 var elm$core$Basics$LT = {$: 'LT'};
@@ -4405,66 +4425,56 @@ var elm$core$Array$toList = function (array) {
 	return A3(elm$core$Array$foldr, elm$core$List$cons, _List_Nil, array);
 };
 var elm$core$Basics$fdiv = _Basics_fdiv;
-var elm$core$Basics$mul = _Basics_mul;
 var elm$core$Basics$pow = _Basics_pow;
-var elm$core$Basics$round = _Basics_round;
-var elm$core$Basics$toFloat = _Basics_toFloat;
-var author$project$Main$bmi = F2(
-	function (w, h) {
-		return elm$core$Basics$round(
-			(100 * w) / A2(elm$core$Basics$pow, h / 100, 2)) / 100;
+var author$project$Main$bmiFloat = F2(
+	function (h, w) {
+		return w / A2(elm$core$Basics$pow, h / 100, 2);
 	});
-var author$project$Main$initialModel = {
-	bmi: A2(author$project$Main$bmi, 75, 175),
-	height: 175,
-	weight: 75
-};
 var elm$core$Maybe$Just = function (a) {
 	return {$: 'Just', a: a};
 };
 var elm$core$Maybe$Nothing = {$: 'Nothing'};
 var elm$core$String$toFloat = _String_toFloat;
-var author$project$Main$update = F2(
-	function (msg, model) {
-		switch (msg.$) {
-			case 'Calc':
-				return _Utils_update(
-					model,
-					{
-						bmi: A2(author$project$Main$bmi, model.weight, model.height)
-					});
-			case 'Change_height':
-				var s = msg.a;
-				var _n1 = elm$core$String$toFloat(s);
-				if (_n1.$ === 'Just') {
-					var f = _n1.a;
-					return _Utils_update(
-						model,
-						{height: f});
-				} else {
-					return model;
-				}
-			default:
-				var s = msg.a;
-				var _n2 = elm$core$String$toFloat(s);
-				if (_n2.$ === 'Just') {
-					var f = _n2.a;
-					return _Utils_update(
-						model,
-						{weight: f});
-				} else {
-					return model;
-				}
-		}
+var author$project$Main$make_float = function (s) {
+	var _n0 = elm$core$String$toFloat(s);
+	if (_n0.$ === 'Just') {
+		var f = _n0.a;
+		return f;
+	} else {
+		return 0;
+	}
+};
+var elm$core$Basics$mul = _Basics_mul;
+var elm$core$Basics$round = _Basics_round;
+var elm$core$Basics$toFloat = _Basics_toFloat;
+var author$project$Main$myround = F2(
+	function (n, x) {
+		return elm$core$Basics$round(n * x) / n;
 	});
-var author$project$Main$Calc = {$: 'Calc'};
-var author$project$Main$Change_height = function (a) {
-	return {$: 'Change_height', a: a};
-};
-var author$project$Main$Change_weight = function (a) {
-	return {$: 'Change_weight', a: a};
-};
+var elm$core$Basics$apR = F2(
+	function (x, f) {
+		return f(x);
+	});
 var elm$core$String$fromFloat = _String_fromNumber;
+var author$project$Main$bmi = F2(
+	function (h, w) {
+		return elm$core$String$fromFloat(
+			A2(
+				author$project$Main$myround,
+				100,
+				A2(
+					author$project$Main$bmiFloat,
+					author$project$Main$make_float(h),
+					author$project$Main$make_float(w))));
+	});
+var elm$core$Basics$le = _Utils_le;
+var author$project$Main$calcColor = function (model) {
+	var b = A2(
+		author$project$Main$bmiFloat,
+		author$project$Main$make_float(model.height),
+		author$project$Main$make_float(model.weight));
+	return (b <= 25) ? 'green' : 'red';
+};
 var elm$core$Basics$identity = function (x) {
 	return x;
 };
@@ -4628,7 +4638,6 @@ var elm$core$Array$initializeHelp = F5(
 			}
 		}
 	});
-var elm$core$Basics$le = _Utils_le;
 var elm$core$Basics$remainderBy = _Basics_remainderBy;
 var elm$core$Array$initialize = F2(
 	function (len, fn) {
@@ -4868,10 +4877,8 @@ var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 	}
 };
 var elm$html$Html$br = _VirtualDom_node('br');
-var elm$html$Html$button = _VirtualDom_node('button');
 var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$h1 = _VirtualDom_node('h1');
-var elm$html$Html$h2 = _VirtualDom_node('h2');
 var elm$html$Html$input = _VirtualDom_node('input');
 var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
@@ -4883,30 +4890,20 @@ var elm$html$Html$Attributes$stringProperty = F2(
 			key,
 			elm$json$Json$Encode$string(string));
 	});
+var elm$html$Html$Attributes$step = function (n) {
+	return A2(elm$html$Html$Attributes$stringProperty, 'step', n);
+};
+var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
+var elm$html$Html$Attributes$type_ = elm$html$Html$Attributes$stringProperty('type');
 var elm$html$Html$Attributes$value = elm$html$Html$Attributes$stringProperty('value');
-var elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 'Normal', a: a};
-};
-var elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			elm$virtual_dom$VirtualDom$on,
-			event,
-			elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		elm$html$Html$Events$on,
-		'click',
-		elm$json$Json$Decode$succeed(msg));
-};
 var elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
 };
 var elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
 	return {$: 'MayStopPropagation', a: a};
 };
+var elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
 var elm$html$Html$Events$stopPropagationOn = F2(
 	function (event, decoder) {
 		return A2(
@@ -5006,8 +5003,9 @@ var author$project$Main$view = function (model) {
 				elm$html$Html$input,
 				_List_fromArray(
 					[
-						elm$html$Html$Attributes$value(
-						elm$core$String$fromFloat(model.height)),
+						elm$html$Html$Attributes$type_('number'),
+						elm$html$Html$Attributes$step('0.5'),
+						elm$html$Html$Attributes$value(model.height),
 						elm$html$Html$Events$onInput(author$project$Main$Change_height)
 					]),
 				_List_Nil),
@@ -5016,29 +5014,26 @@ var author$project$Main$view = function (model) {
 				elm$html$Html$input,
 				_List_fromArray(
 					[
-						elm$html$Html$Attributes$value(
-						elm$core$String$fromFloat(model.weight)),
+						elm$html$Html$Attributes$type_('number'),
+						elm$html$Html$Attributes$step('0.5'),
+						elm$html$Html$Attributes$value(model.weight),
 						elm$html$Html$Events$onInput(author$project$Main$Change_weight)
 					]),
 				_List_Nil),
 				A2(elm$html$Html$br, _List_Nil, _List_Nil),
 				A2(
-				elm$html$Html$h2,
-				_List_Nil,
+				elm$html$Html$div,
 				_List_fromArray(
 					[
-						elm$html$Html$text(
-						elm$core$String$fromFloat(model.bmi))
-					])),
-				A2(
-				elm$html$Html$button,
-				_List_fromArray(
-					[
-						elm$html$Html$Events$onClick(author$project$Main$Calc)
+						A2(
+						elm$html$Html$Attributes$style,
+						'color',
+						author$project$Main$calcColor(model))
 					]),
 				_List_fromArray(
 					[
-						elm$html$Html$text('Calculate')
+						elm$html$Html$text(
+						A2(author$project$Main$bmi, model.height, model.weight))
 					]))
 			]));
 };

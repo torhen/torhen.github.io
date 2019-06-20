@@ -7,13 +7,12 @@ import Html.Events exposing (onClick, onInput)
 
 
 type alias Model =
-    { height : Float
-    , weight : Float
-    , bmi : Float}
+    { height : String
+    , weight : String}
 
 
 initialModel : Model
-initialModel = { height = 175, weight = 75, bmi=bmi 75 175}
+initialModel = { height = "175", weight = "75"}
 
 
 type Msg
@@ -25,34 +24,46 @@ update : Msg -> Model -> Model
 update msg model =
     case msg of
         Calc ->
-            { model | bmi = bmi model.weight model.height }
+            model
 
-        Change_height s ->
-            case String.toFloat s of
-                    Just f -> { model | height = f}
-                    Nothing -> model
-       
-
-        Change_weight s ->
-            case String.toFloat s of
-                    Just f -> { model | weight = f}
-                    Nothing -> model
-       
+        Change_height s -> 
+            { model | height = s}
+ 
+        Change_weight s -> 
+            { model | weight = s}
 
 
-bmi w h =  (100 * w / ((h / 100) ^ 2) |> round |> toFloat ) / 100
+make_float s =
+    case String.toFloat s of
+        Just f -> f
+        Nothing -> 0
+
+bmiFloat h w =  w / (h / 100) ^ 2
+
+myround n x = toFloat (round  (n*x) ) / n
+
+bmi h w = bmiFloat (make_float h) (make_float w) |> myround 100|> String.fromFloat
+
+calcColor model = 
+    let 
+        b = (bmiFloat (make_float model.height) (make_float model.weight))
+    in
+    if b <= 25 then "green"
+    else "red"
+     --if (bmiFloat (make_float model.height) (make_float model.weight)) > 30 then "red" else "green"
+
+
 
 view : Model -> Html Msg
 view model =
     div []
         [ 
         h1 [] [text "BMI Calculator"]
-        , input [value (String.fromFloat model.height), onInput Change_height] [] 
+        , input [type_ "number", step "0.5", value model.height, onInput Change_height] [] 
         , br [] []
-        , input [value (String.fromFloat model.weight), onInput Change_weight] []
+        , input [type_ "number", step "0.5",value model.weight, onInput Change_weight] []
         , br [] []
-        , h2 [] [text (String.fromFloat model.bmi)]
-        , button [ onClick Calc ] [ text "Calculate" ]
+        , div [style "color" (calcColor model)] [text (bmi model.height model.weight)]
         ]
 
 
