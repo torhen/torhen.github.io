@@ -32,38 +32,47 @@ update msg model =
         Change_weight s -> 
             { model | weight = s}
 
-
-make_float s =
+make_float s = 
     case String.toFloat s of
         Just f -> f
         Nothing -> 0
 
-bmiFloat h w =  w / (h / 100) ^ 2
+myround n x =
+    let 
+        k = 10 ^ n
+    in         
+        toFloat (round  (k*x) ) / k
 
-myround n x = toFloat (round  (n*x) ) / n
+bmi model = 
+    let h = 
+            model.height |> make_float |> (*) 0.01  -- h in meter
 
-bmi h w = bmiFloat (make_float h) (make_float w) |> myround 100|> String.fromFloat
+        w = 
+            model.weight |> make_float
+
+     in
+        w / h ^ 2 |> myround 2
+
+
 
 calcColor model = 
-    let 
-        b = (bmiFloat (make_float model.height) (make_float model.weight))
-    in
-    if b <= 25 then "green"
-    else "red"
-     --if (bmiFloat (make_float model.height) (make_float model.weight)) > 30 then "red" else "green"
-
-
+    if bmi model <= 25 then
+        "green"
+    else
+        "red"
 
 view : Model -> Html Msg
 view model =
     div []
         [ 
         h1 [] [text "BMI Calculator"]
-        , input [type_ "number", step "0.5", value model.height, onInput Change_height] [] 
+        , input [type_ "number", step "1", value model.height, onInput Change_height] [] 
+        , text " cm"
         , br [] []
         , input [type_ "number", step "0.5",value model.weight, onInput Change_weight] []
+        , text " kg"
         , br [] []
-        , div [style "color" (calcColor model)] [text (bmi model.height model.weight)]
+        , div [style "color" (calcColor model)] [text ("BMI = " ++ (bmi model |> String.fromFloat))]
         ]
 
 
