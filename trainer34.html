@@ -1,0 +1,55 @@
+<html>
+<head>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.4/brython.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.4/brython_stdlib.min.js'></script>
+</head>
+<body onload='brython()'>
+<h1 id='task'>4 * 7</h1>
+
+<button id='btn24'>24</button>
+<button id='btn27'>27</button>
+<button id='btn28'>28</button><br>
+<button id='btn32'>32</button>
+<button id='btn36'>36</button>
+
+<script type='text/python'>
+from browser import document, alert
+import random
+
+last_answer = '28'
+
+def task(e):
+	global last_answer
+	answer = e.target.text
+	
+	if answer == last_answer:
+		document['task'].style.color = 'black'
+		print('richtig')
+	else:
+		document['task'].style.color = 'red'
+		return
+	
+	while True:
+		a, b = random.choice([(3,8), (3,9), (4,6), (4,7), (4,8), (4,9)])
+		i = random.choice([0, 1])
+		if i == 1:
+			a, b = b, a
+		s = f'{a} * {b}'
+		answer = str(a * b)
+		if answer != last_answer:
+			break
+	
+	document['task'].text = s
+	last_answer = str(a * b)
+	
+
+document['btn24'].bind('click', task)
+document['btn27'].bind('click', task)
+document['btn28'].bind('click', task)
+document['btn32'].bind('click', task)
+document['btn36'].bind('click', task)
+
+</script>
+</body>
+</html>
+</html>
