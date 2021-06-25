@@ -1,0 +1,37 @@
+<html>
+<head>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.4/brython.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.4/brython_stdlib.min.js'></script>
+</head>
+<body onload='brython()'>
+<h3>Channel Capacity (Shannon-Hartley Theorem)</h3>
+<a href='https://en.wikipedia.org/wiki/Shannon%E2%80%93Hartley_theorem'>Wikipedia</a><br><br>
+<table>
+<tr>
+<td>Bandwidth (MHz)</td><td><input type='number' id='bw' value='1'></td>
+</tr>
+<tr>
+<td>SNR (dB)</td><td><input type='number' id='snr' value='10'></td>
+</tr>
+</table><br>
+<button id='calc'>Calc</button>
+<h3 id='result'></h3>
+<hr>
+
+<script type='text/python'>
+from browser import document
+import math
+def calc(e):
+	bw = document['bw'].value
+	snr = document['snr'].value
+	bw = float(bw) 
+	snr = 10 ** (float(snr) / 10)
+	c = bw * math.log2(1 + snr)
+	c = round(c, 3)
+	document['result'].text = str(c) + " Mbit/s"
+
+	
+document['calc'].bind('click', calc)
+</script>
+</body>
+</html>
