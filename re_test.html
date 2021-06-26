@@ -1,0 +1,42 @@
+<html>
+<head>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.4/brython.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.4/brython_stdlib.min.js'></script>
+</head>
+<body onload='brython()'>
+<h2>Regular Expressions Test</h2>
+<table>
+<tr>
+<td>pattern</td><td><input id='pat' value='.+' ></input></td>
+</tr>
+<tr>
+<td>text</td><td><input id='txt' value='Hello World!'></input><br></td>
+</tr>
+</table><br>
+<button id='match'>match</button>
+<h3 id='out1'></h3>
+<h3 id='out2'></h3>
+<script type='text/python'>
+from browser import document
+import re
+
+def match(e):
+	pattern = document['pat'].value
+	text = document['txt'].value
+	try:
+		m = re.match(pattern, text)
+		document['out1'].text = str(m)
+		document['out2'].text = str(m.groups())
+	except Exception as e:
+		document['out1'].text = 'Error'
+		document['out2'].text = str(e)
+		
+
+
+	
+document['match'].bind('click', match)
+
+
+</script>
+</body>
+</html>
