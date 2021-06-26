@@ -14,29 +14,39 @@
 </tr>
 </table><br>
 <button id='match'>match</button>
+<button id='search'>search</button>
 <br><br>
+<div id='out0'></div>
 <div id='out1'></div>
 <div id='out2'></div>
 <script type='text/python'>
-from browser import document
+from browser import document, html
 import re
 
-def match(e):
+def calc(e):
+	button = e.target.id
 	pattern = document['pat'].value
 	text = document['txt'].value
+	
+	if button == 'match':
+		func = re.match
+		out_title = 'result match'
+	else:
+		func = re.search
+		out_title = 'result search'
 	try:
-		m = re.match(pattern, text)
+		m = func(pattern, text)
+		document['out0'].text = out_title
 		document['out1'].text = str(m)
-		document['out2'].text = str(m.groups())
+		if m:
+			document['out2'].text = str(m.groups())
 	except Exception as e:
 		document['out1'].text = 'Error'
 		document['out2'].text = str(e)
-		
-
 
 	
-document['match'].bind('click', match)
-
+document['match'].bind('click', calc)
+document['search'].bind('click', calc)
 
 </script>
 </body>
