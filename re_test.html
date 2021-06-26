@@ -40,6 +40,8 @@ def calc(e):
 		document['out1'].text = str(m)
 		if m:
 			document['out2'].text = str(m.groups())
+		else:
+			document['out2'].text = 'no groups'
 	except Exception as e:
 		document['out1'].text = 'Error'
 		document['out2'].text = str(e)
