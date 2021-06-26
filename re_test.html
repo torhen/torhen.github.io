@@ -15,6 +15,7 @@
 </table><br>
 <button id='match'>match</button>
 <button id='search'>search</button>
+<button id='findall'>findall</button>
 <br><br>
 <div id='out0'></div>
 <div id='out1'></div>
@@ -45,10 +46,18 @@ def calc(e):
 	except Exception as e:
 		document['out1'].text = 'Error'
 		document['out2'].text = str(e)
-
+		
+def findall(e):
+	pattern = document['pat'].value
+	text = document['txt'].value
+	l = re.findall(pattern, text)
+	document['out0'].text = 'result findall'
+	document['out1'].text = str(l)
+	document['out2'].text = ''
 	
 document['match'].bind('click', calc)
 document['search'].bind('click', calc)
+document['findall'].bind('click', findall)
 
 </script>
 </body>
