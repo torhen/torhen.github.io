@@ -2,6 +2,21 @@
   <head>
   </head>
   <body>
+  
+    <h2>jupyter training</h2>
+	<p id="p1"></p>
+    <ul>
+      <li><a href='training_matplotlib.ipynb'>0 - matplotlib</a></li>
+      <li><a href='training_ipywidgets.ipynb'>1 - ipywidgets</a></li>
+      <li><a href='training_regex.ipynb'>2 - regex</a></li>
+      <li><a href='training_numpy.ipynb'>3 - numpy</a></li>
+      <li><a href='training_pandas.ipynb'>4 - pandas</a></li>
+      <li><a href='training_ipycanvas.ipynb'>5 - ipycanvas</a></li>
+      <li><a href='training_jupyter.ipynb'>6 - jupyter</a></li>
+      <li><a href='training_js.ipynb'>7 tic-80 javascript</a></li>
+    </ul>  
+	
+	
     <h2>Brython</h2>
     <ul>
       <li><a href=trainer34.html>Timetables 3 and 4</a></li>
@@ -14,19 +29,19 @@
     <ul>
       <li><a href='https://editor.p5js.org/torhen/full/BM2J6v5yS'>Hello p5js</a></li>
     </ul>
-    
-     <h2>jupyter training</h2>
-    <ul>
-      <li><a href='training_matplotlib.ipynb'>Mo - matplotlib</a></li>
-      <li><a href='training_ipywidgets.ipynb'>Di - ipywidgets</a></li>
-      <li><a href='training_regex.ipynb'>Mi - regex</a></li>
-      <li><a href='training_numpy.ipynb'>Do - numpy</a></li>
-      <li><a href='training_pandas.ipynb'>Fr - pandas</a></li>
-      <li><a href='training_ipycanvas.ipynb'>Sa - ipycanvas</a></li>
-      <li><a href='training_jupyter.ipynb'>So - jupyter</a></li>
-      <li><a href='training_js.ipynb'>tic-80 javascript</a></li>
-    </ul>   
-    
+
+<script>
+'use strict'
+function get_number(i){
+	var d = new Date()
+	var t = d.getTime()  / (1000 * 3600 * 24)
+	var k = t % i
+	return  Math.floor(k)
+}
+
+document.getElementById("p1").innerHTML = 'Lesson today: ' + get_number(8)
+
+</script>
     
   </body>
 </html>
