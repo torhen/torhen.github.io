@@ -12,10 +12,7 @@ int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	RegisterClass(&wc);
 
-	hWnd = CreateWindow(L"TEST_CLASS", L"MinimalWindow", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, 0, 0, hInstance, 0);
-
-	ShowWindow(hWnd, nCmdShow);
-	UpdateWindow(hWnd);
+	hWnd = CreateWindow(L"TEST_CLASS", L"MinimalWindow", WS_OVERLAPPEDWINDOW|WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, 0, 0, hInstance, 0);
 
 	while (true) {
 		GetMessage(&msg, 0, 0, 0);
