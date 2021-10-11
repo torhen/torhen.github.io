@@ -1,17 +1,17 @@
 #include <windows.h>
 //http://www.winprog.org/tutorial/bitmaps.html
 
-
 HBITMAP g_bitmap;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
+
 
 	PAINTSTRUCT ps;
 	HDC hDC;
 	RECT rect = { 10, 10, 100, 100 };
 	HBITMAP hbmOld;
 
-	BITMAP bm;
+	static BITMAP bm;
 
 	HDC hdc;
 	HDC hdcMem;
@@ -23,11 +23,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	case WM_CREATE:
 		g_bitmap = (HBITMAP)LoadImage(0, L"C:\\test\\test.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 
-		if (g_bitmap) {
-			GetObject((HGDIOBJ)g_bitmap, sizeof(bm), &bm);
+		if (g_bitmap == 0) {
+			MessageBox(0, L"Could not load BMP", 0, 0);
 		}
 		else {
-			MessageBox(0, L"Could not load BMP", 0, 0);
+			// just get size of bitmap and store it in static bm
+			GetObject((HGDIOBJ)g_bitmap, sizeof(bm), &bm);
 		}
 
 	case WM_PAINT:
@@ -36,11 +37,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 
 		hdcMem = CreateCompatibleDC(hdc);
 
+		// test g_bitmap not zeros to get rid of warnings
 		if (g_bitmap) {
 			SelectObject(hdcMem, g_bitmap);
+			BitBlt(hdc, 10, 10, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0, SRCCOPY);
 		}
-
-		BitBlt(hdc, 10, 10, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0, SRCCOPY);
 
 		DeleteDC(hdcMem);
 
