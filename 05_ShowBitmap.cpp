@@ -6,7 +6,6 @@ HBITMAP g_bitmap;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 
-
 	PAINTSTRUCT ps;
 	HDC hDC;
 	RECT rect = { 10, 10, 100, 100 };
@@ -30,9 +29,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 		else {
 			MessageBox(0, L"Could not load BMP", 0, 0);
 		}
-
-		
-
 
 	case WM_PAINT:
 
