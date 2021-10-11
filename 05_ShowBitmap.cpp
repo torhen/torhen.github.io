@@ -1,34 +1,21 @@
 #include <windows.h>
 //http://www.winprog.org/tutorial/bitmaps.html
 
-HBITMAP g_bitmap;
+HBITMAP g_hBitmap;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 
-
 	PAINTSTRUCT ps;
-	HDC hDC;
-	RECT rect = { 10, 10, 100, 100 };
-	HBITMAP hbmOld;
-
-	static BITMAP bm;
-
 	HDC hdc;
+	BITMAP bm;
 	HDC hdcMem;
 
-	TCHAR buffer[MAX_COMPUTERNAME_LENGTH + 1];
-	DWORD size = sizeof(buffer) / sizeof(buffer[0]);
-	GetComputerNameW(buffer, &size);
 	switch (Msg) {
 	case WM_CREATE:
-		g_bitmap = (HBITMAP)LoadImage(0, L"C:\\test\\test.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+		g_hBitmap = (HBITMAP)LoadImage(0, L"C:\\test\\test.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 
-		if (g_bitmap == 0) {
+		if (g_hBitmap == 0) {
 			MessageBox(0, L"Could not load BMP", 0, 0);
-		}
-		else {
-			// just get size of bitmap and store it in static bm
-			GetObject((HGDIOBJ)g_bitmap, sizeof(bm), &bm);
 		}
 
 	case WM_PAINT:
@@ -38,8 +25,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 		hdcMem = CreateCompatibleDC(hdc);
 
 		// test g_bitmap not zeros to get rid of warnings
-		if (g_bitmap) {
-			SelectObject(hdcMem, g_bitmap);
+		if (g_hBitmap) {
+			SelectObject(hdcMem, g_hBitmap);
+			// Just to get size of bitmap
+			GetObject((HGDIOBJ)g_hBitmap, sizeof(bm), &bm);
 			BitBlt(hdc, 10, 10, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0, SRCCOPY);
 		}
 
