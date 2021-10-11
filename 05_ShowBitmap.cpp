@@ -6,9 +6,9 @@ HBITMAP g_hBitmap;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 
 	PAINTSTRUCT ps;
+	HDC hdcMem;
 	HDC hdc;
 	BITMAP bm;
-	HDC hdcMem;
 
 	switch (Msg) {
 	case WM_CREATE:
