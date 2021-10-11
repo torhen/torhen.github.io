@@ -24,9 +24,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	case WM_CREATE:
 		g_bitmap = (HBITMAP)LoadImage(0, L"C:\\test\\test.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 
-		if (g_bitmap == 0) {
+		if (g_bitmap) {
+			GetObject((HGDIOBJ)g_bitmap, sizeof(bm), &bm);
+		}
+		else {
 			MessageBox(0, L"Could not load BMP", 0, 0);
 		}
+
+		
 
 
 	case WM_PAINT:
@@ -35,13 +40,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 
 		hdcMem = CreateCompatibleDC(hdc);
 
-		SelectObject(hdcMem, g_bitmap);
-		GetObject((HGDIOBJ)g_bitmap, sizeof(bm), &bm);
+		if (g_bitmap) {
+			SelectObject(hdcMem, g_bitmap);
+		}
 
 		BitBlt(hdc, 10, 10, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0, SRCCOPY);
 
 		DeleteDC(hdcMem);
-
 
 		EndPaint(hWnd, &ps);
 		return 0;
