@@ -1,19 +1,16 @@
 #include <windows.h>
 
-void Draw(HWND hWnd)
-{
-    HDC hdc;
+void Draw(HWND hWnd){
     int dx = rand() % 500;
     int dy = rand() % 500;
-    RECT   rect = { 10 + dx, 10 + dy, 100 + dx, 100 + dy };
+    RECT  rect = { 10 + dx, 10 + dy, 100 + dx, 100 + dy };
 
-    hdc = GetDC(hWnd);
-    DrawText(hdc, L"TEST", -1, &rect, 0);
-    ReleaseDC(hWnd, hdc);
+    HDC hDC = GetDC(hWnd);
+    DrawText(hDC, L"  *  ", -1, &rect, 0);
+    ReleaseDC(hWnd, hDC);
 }
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
-{
+LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam){
     switch (iMsg) {
     case WM_DESTROY:
         PostQuitMessage(0);
@@ -38,22 +35,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
     ShowWindow(hwnd, iCmdShow);
     UpdateWindow(hwnd);
 
-    while (TRUE)
-    {
-        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-        {
+    while (TRUE) {
+        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT)
                 break;
-
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-        else
-            Draw(hwnd);
-            Sleep(0);
+        Draw(hwnd);
+        Sleep(0);
     }
     return 0;
 }
-
 
 
