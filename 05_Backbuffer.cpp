@@ -7,6 +7,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	PAINTSTRUCT ps = {};
 	HDC hDC;
 	RECT cr;
+	// Bitmap dimensions
 	int w = 10, h = 10;
 
 	switch (Msg) {
@@ -16,17 +17,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 		g_bmi.bmiHeader.biWidth = w;
 		g_bmi.bmiHeader.biHeight = h;
 		g_bmi.bmiHeader.biBitCount = 32;
-		g_bmi.bmiHeader.biCompression = BI_RGB;
 		g_bmi.bmiHeader.biPlanes = 1;
 
 		pixel_array = new UINT32[w * h];
+		// set first pixel to blue
+		pixel_array[0] = 0x000000FF;
 		
 	case WM_PAINT:
 		hDC = BeginPaint(hWnd, &ps);
+
 		GetClientRect(hWnd, &cr);
-		pixel_array[0] = 0xFFFF0000;
 		StretchDIBits(hDC, cr.left, cr.top, cr.right, cr.bottom, 0, 0, w, h, pixel_array, &g_bmi, 0, SRCCOPY);
+
 		EndPaint(hWnd, &ps);
+
 		return 0; 
 
 	case WM_DESTROY:
