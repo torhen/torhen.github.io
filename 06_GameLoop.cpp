@@ -1,51 +1,74 @@
 #include <windows.h>
 
-void Draw(HWND hWnd){
-    int dx = rand() % 500;
-    int dy = rand() % 500;
-    RECT  rect = { 10 + dx, 10 + dy, 100 + dx, 100 + dy };
+const int gBmpWidth = 160;
+const int gBmpHeight = 90;
+BITMAPINFO gBmi;
+UINT32 gPixels[gBmpWidth * gBmpHeight];
 
-    HDC hDC = GetDC(hWnd);
-    DrawText(hDC, L"  *  ", -1, &rect, 0);
-    ReleaseDC(hWnd, hDC);
+LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
+
+	PAINTSTRUCT ps;
+	HDC hDC;
+
+	switch (Msg) {
+
+	case WM_CREATE:
+		gBmi = {};
+		gBmi.bmiHeader.biSize = sizeof(gBmi.bmiHeader);
+		gBmi.bmiHeader.biPlanes = 1;
+		gBmi.bmiHeader.biBitCount = 32;
+		gBmi.bmiHeader.biWidth = gBmpWidth;
+		gBmi.bmiHeader.biHeight = gBmpHeight;
+
+		return 0;
+
+	case WM_DESTROY:
+		PostQuitMessage(0);
+	}
+
+	return DefWindowProc(hWnd, Msg, wParam, lParam);
 }
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam){
-    switch (iMsg) {
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        return 0;
-    }
-    return DefWindowProc(hwnd, iMsg, wParam, lParam);
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
+
+	WNDCLASS wc = {};
+	HWND hWnd;
+	RECT cr;
+
+	wc.hInstance = hInstance;
+	wc.lpfnWndProc = WndProc;
+	wc.lpszClassName = L"MY_WINDOW_CLASS";
+	wc.style = CS_VREDRAW | CS_HREDRAW;
+
+	if (!RegisterClass(&wc)) {
+		MessageBox(0, L"Could not register class", 0, 0);
+		return 0;
+	}
+
+	hWnd = CreateWindow(L"MY_WINDOW_CLASS", L"My Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+		CW_USEDEFAULT, CW_USEDEFAULT, gBmpWidth * 8, gBmpHeight * 8, 0, 0, hInstance, 0);
+
+	MSG msg;
+	while (1) {
+		while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
+			if (msg.message == WM_QUIT) {
+				return 0;
+			}
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+
+		// Set pixel
+		for (int i = 0; i < gBmpWidth * gBmpHeight; i++) {
+			gPixels[i] = RGB(rand(), rand(), rand());
+		}
+
+		//Draw bitmap
+		GetClientRect(hWnd, &cr);
+		HDC hDC = GetDC(hWnd);
+		StretchDIBits(hDC, 0, 0, cr.right, cr.bottom, 0, 0, gBmpWidth, gBmpHeight, &gPixels, &gBmi, 0, SRCCOPY);
+		ReleaseDC(hWnd, hDC);
+	}
+
+	return 0;
 }
-
-int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int iCmdShow){
-    HWND         hwnd;
-    MSG          msg;
-    WNDCLASS wc = {};
-
-    wc.lpfnWndProc = WndProc;
-    wc.hInstance = hInstance;
-    wc.lpszClassName = L"MY_CLASS";
-
-    RegisterClass(&wc);
-
-    hwnd = CreateWindow(L"MY_CLASS", L"MY Window", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 500, 500, 0, 0, hInstance, NULL);
-
-    ShowWindow(hwnd, iCmdShow);
-    UpdateWindow(hwnd);
-
-    while (TRUE) {
-        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-            if (msg.message == WM_QUIT)
-                break;
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-        Draw(hwnd);
-        Sleep(0);
-    }
-    return 0;
-}
-
-
