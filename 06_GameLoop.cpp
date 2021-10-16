@@ -1,9 +1,9 @@
 #include <windows.h>
 
-const int gBmpWidth = 160;
-const int gBmpHeight = 90;
+const int BMP_WIDTH = 160;
+const int BMP_HEIGHT = 90;
 BITMAPINFO gBmi;
-UINT32 gPixels[gBmpWidth * gBmpHeight];
+UINT32 gPixels[BMP_WIDTH * BMP_HEIGHT];
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 
@@ -11,14 +11,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	HDC hDC;
 
 	switch (Msg) {
-
 	case WM_CREATE:
 		gBmi = {};
 		gBmi.bmiHeader.biSize = sizeof(gBmi.bmiHeader);
 		gBmi.bmiHeader.biPlanes = 1;
 		gBmi.bmiHeader.biBitCount = 32;
-		gBmi.bmiHeader.biWidth = gBmpWidth;
-		gBmi.bmiHeader.biHeight = gBmpHeight;
+		gBmi.bmiHeader.biWidth = BMP_WIDTH;
+		gBmi.bmiHeader.biHeight = BMP_HEIGHT;
 
 		return 0;
 
@@ -34,6 +33,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
 	WNDCLASS wc = {};
 	HWND hWnd;
 	RECT cr;
+	static int iCount = 0;
 
 	wc.hInstance = hInstance;
 	wc.lpfnWndProc = WndProc;
@@ -46,7 +46,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
 	}
 
 	hWnd = CreateWindow(L"MY_WINDOW_CLASS", L"My Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-		CW_USEDEFAULT, CW_USEDEFAULT, gBmpWidth * 8, gBmpHeight * 8, 0, 0, hInstance, 0);
+		CW_USEDEFAULT, CW_USEDEFAULT, BMP_WIDTH * 8, BMP_HEIGHT * 8, 0, 0, hInstance, 0);
 
 	MSG msg;
 	while (1) {
@@ -59,14 +59,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
 		}
 
 		// Set pixel
-		for (int i = 0; i < gBmpWidth * gBmpHeight; i++) {
+		for (int i = 0; i < BMP_WIDTH * BMP_HEIGHT; i++) {
 			gPixels[i] = RGB(rand(), rand(), rand());
 		}
 
 		//Draw bitmap
 		GetClientRect(hWnd, &cr);
 		HDC hDC = GetDC(hWnd);
-		StretchDIBits(hDC, 0, 0, cr.right, cr.bottom, 0, 0, gBmpWidth, gBmpHeight, &gPixels, &gBmi, 0, SRCCOPY);
+		StretchDIBits(hDC, 0, 0, cr.right, cr.bottom, 0, 0, BMP_WIDTH, BMP_HEIGHT, &gPixels, &gBmi, 0, SRCCOPY);
+		TCHAR buffer[100];
+		iCount++;
+		wsprintf(buffer, L"%d k frames", iCount/1000);
+		DrawText(hDC, buffer, -1, &cr, 0);
 		ReleaseDC(hWnd, hDC);
 	}
 
