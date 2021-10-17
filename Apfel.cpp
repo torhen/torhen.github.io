@@ -9,7 +9,7 @@ UINT32 g_Pixel[BMP_W * BMP_H];
 
 float g_x = -0.595231;
 float g_y = 0.621067;
-float g_d = 5;
+float g_d = 10;
 float g_factor = 0.95;
 
 int apfel(float px, float py) {
@@ -142,7 +142,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
 			g_factor = 1.05;
 		}
 
-		if (g_d > 5) {
+		if (g_d > 10) {
 			g_factor = 0.98;
 		}
 
