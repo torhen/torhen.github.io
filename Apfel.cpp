@@ -9,7 +9,7 @@ UINT32 g_Pixel[BMP_W * BMP_H];
 
 float g_x = -0.595231;
 float g_y = 0.621067;
-float g_d = 2.0;
+float g_d = 3.0;
 
 int apfel(float px, float py) {
 	float x = 0.0;
@@ -134,6 +134,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
 		GetClientRect(hWnd, &cr);
 		hDC = GetDC(hWnd);
 		g_d = g_d * 0.95;
+		if (g_d < 0.000001) {
+			g_d = 3.0;
+		}
+
 
 		wchar_t buffer[100];
 		swprintf(buffer, 100,  L"%f %f\n", g_x, g_y);
