@@ -143,7 +143,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
 		}
 
 		if (g_d > 5) {
-			g_factor = 0.95;
+			g_factor = 0.98;
 		}
 
 
