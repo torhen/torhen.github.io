@@ -1,25 +1,22 @@
 #include <windows.h>
 #include <stdio.h>
 
+// define dimension and framerate
 const int BMPW = 20;
 const int BMPH = 20;
-int gFrameRate = 10;
+int gFrameRate =  2;
+
 BITMAPINFO gBmi;
 UINT32 gPixel[BMPW * BMPH];
 long int gFrameCount = 0;
 
 int update() {
-
-	// all pixels black
-	for (int i = 0; i < BMPW * BMPH; i++) {
-		gPixel[i] = 0;
+	int n = gFrameCount % BMPW;
+	for(int y = 0; y < BMPH; y++) {
+		for (int x = 0; x < BMPW; x++) {
+			gPixel[x + y * BMPW] = RGB(rand(), rand(), rand());
+		}
 	}
-
-	// on pixel red
-	int n = gFrameCount % (BMPW * BMPH);
-	gPixel[n] = RGB(0, 0, 255);
-
-
 	return 0;
 }
 
@@ -31,12 +28,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 
 	switch (Msg) {
 	case WM_CREATE:
+		// initialize BITMAPINFO
 		gBmi.bmiHeader.biSize = sizeof(gBmi.bmiHeader);
 		gBmi.bmiHeader.biWidth = BMPW;
 		gBmi.bmiHeader.biHeight = BMPH;
 		gBmi.bmiHeader.biPlanes = 1;
 		gBmi.bmiHeader.biBitCount = 32;
 		return 0;
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
@@ -53,10 +52,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int iCmd
 	MSG msg;
 	RECT cr;
 	HDC hDC;
-	LARGE_INTEGER start, curr, second;
+	LARGE_INTEGER liSecond, liStart, liNow;
 
+	// Register window class
 	wc.hInstance = hInstance;
-	wc.lpfnWndProc  = WndProc;
+	wc.lpfnWndProc = WndProc;
 	wc.lpszClassName = L"MY_CLASS";
 
 	if (RegisterClass(&wc) == 0) {
@@ -64,42 +64,45 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int iCmd
 		return 0;
 	}
 
-	hWnd = CreateWindow(L"MY_CLASS", L"My Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 500, 500, 0, 0, hInstance, 0);
+	// Create Window
+	hWnd = CreateWindow(L"MY_CLASS", L"Constant Frame Rate", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 
+		CW_USEDEFAULT, CW_USEDEFAULT, 500, 500, 0, 0, hInstance, 0);
 
-	while (1) {
+	// Get frequency of performance counter
+	QueryPerformanceFrequency(&liSecond);
 
-		// Get start value 
-		QueryPerformanceCounter(&start);
+	while(1) {
 
-		PeekMessage(&msg, 0, 0, 0, PM_REMOVE);
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		// Get start value of performance counter
+		QueryPerformanceCounter(&liStart);
 
-		if (msg.message == WM_QUIT) {
-			return 0;
+		// process all messages in queue
+		while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
+			if (msg.message == WM_QUIT) {
+				return 0;
+			}
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
 		}
 
-		hDC = GetDC(hWnd);
-		GetClientRect(hWnd, &cr);
-
+		// update buffer
 		gFrameCount++;
 		update();
 
+		// display buffer
+		hDC = GetDC(hWnd);
+		GetClientRect(hWnd, &cr);
 		StretchDIBits(hDC, 0, 0, cr.right, cr.bottom, 0, 0, BMPW, BMPH, gPixel, &gBmi, 0, SRCCOPY);
 		ReleaseDC(hWnd, hDC);
 
-		LARGE_INTEGER second;
-		QueryPerformanceFrequency(&second);
-		// wait till frame end
+		// loop until the target time of frame is reached
 		while (1) {
-			QueryPerformanceCounter(&curr);
+			QueryPerformanceCounter(&liNow);
 			Sleep(0);
-			if (curr.QuadPart > start.QuadPart + second.QuadPart / gFrameRate) {
+			if (liNow.QuadPart > liStart.QuadPart + liSecond.QuadPart / gFrameRate) {
 				break;
 			}
 		}
-	
 	}
-
 	return 0;
 }
