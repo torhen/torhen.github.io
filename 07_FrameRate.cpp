@@ -61,8 +61,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int iCmd
 
 	// Get frequency of performance counter
 	QueryPerformanceFrequency(&liSecond);
-
-	while (1) {
+	
+	// Game Loop
+	for(;;){
 
 		// Get start value of performance counter
 		QueryPerformanceCounter(&liStart);
