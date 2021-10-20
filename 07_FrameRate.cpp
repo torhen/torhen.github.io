@@ -27,7 +27,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 		gBmi.bmiHeader.biBitCount = 32;
 		return 0;
 
-	case WM_DESTROY:
+	case WM_CLOSE:
 		PostQuitMessage(0);
 		return 0;
 	}
