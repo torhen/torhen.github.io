@@ -10,24 +10,12 @@ BITMAPINFO gBmi;
 UINT32 gPixel[BMPW * BMPH];
 long int gFrameCount = 0;
 
-int update() {
-	int color;
-	if(gFrameCount % 2) {
-		color = 0x00FF0000; // red
-	}
-	else {
-		color = 0x000000ff; // blue
-	}
-	gPixel[0 + 0 * BMPW] = color;
-
+int update(){
+	gPixel[0 + 0 * BMPW] = 0xFFFF0000 * (gFrameCount % 2);
 	return 0;
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
-
-	PAINTSTRUCT ps;
-	HDC hDC;
-	RECT cr;
 
 	switch (Msg) {
 	case WM_CREATE:
