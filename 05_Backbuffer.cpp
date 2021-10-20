@@ -4,17 +4,6 @@ const int BMPW = 10;
 const int BMPH = 10;
 UINT32 gPixel[BMPW * BMPH];
 
-void paint(HDC hDC, int x, int y) {
-	BITMAPINFO Bmi = {};
-	Bmi.bmiHeader.biSize = sizeof(Bmi.bmiHeader);
-	Bmi.bmiHeader.biWidth = BMPW;
-	Bmi.bmiHeader.biHeight = -BMPH;
-	Bmi.bmiHeader.biPlanes = 1;
-	Bmi.bmiHeader.biBitCount = 32;
-	gPixel[0] = RGB(255, 0, 255);
-	StretchDIBits(hDC, 0, 0, x, y, 0, 0, BMPW, BMPH, gPixel, &Bmi, 0, SRCCOPY);
-}
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	switch (Msg) {
 	case WM_PAINT:
@@ -22,7 +11,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 		PAINTSTRUCT ps;
 		HDC hDC;
 		hDC = BeginPaint(hWnd, &ps);
-		paint(hDC, ps.rcPaint.right, ps.rcPaint.bottom);
+
+		BITMAPINFO Bmi = {};
+		Bmi.bmiHeader.biSize = sizeof(Bmi.bmiHeader);
+		Bmi.bmiHeader.biWidth = BMPW;
+		Bmi.bmiHeader.biHeight = -BMPH;
+		Bmi.bmiHeader.biPlanes = 1;
+		Bmi.bmiHeader.biBitCount = 32;
+
+		gPixel[0] = RGB(255, 0, 255);
+		StretchDIBits(hDC, 0, 0, ps.rcPaint.right, ps.rcPaint.bottom, 0, 0, BMPW, BMPH, gPixel, &Bmi, 0, SRCCOPY);
+
 		EndPaint(hWnd, &ps);
 	}return 0;
 
