@@ -1,41 +1,45 @@
-#include<windows.h>
+#include <windows.h>
 
-LRESULT _stdcall WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
-	HDC hdc;
-	PAINTSTRUCT ps;
-	RECT rect = {10, 10, 100, 100};
+LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	switch (Msg) {
 	case WM_PAINT:
-		hdc = BeginPaint(hWnd, &ps);
-		DrawText(hdc, L"Hello World!", -1, &rect, 0);
+	{
+		PAINTSTRUCT ps;
+		HDC hDC;
+		hDC = BeginPaint(hWnd, &ps);
+		DrawText(hDC, L"TEST", -1, &ps.rcPaint, 0);
 		EndPaint(hWnd, &ps);
-		return 0;
-	case WM_DESTROY:
-			PostQuitMessage(0);
-			return 0;
+	}return 0;
+
+	case WM_CLOSE:
+	{
+		PostQuitMessage(0);
+	}return 0;
 	}
+
 	return DefWindowProc(hWnd, Msg, wParam, lParam);
 }
 
-int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ char*, _In_ int iCmdShow) {
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	WNDCLASS wc = {};
 	wc.lpfnWndProc = WndProc;
-	wc.lpszClassName = L"MY_CLASS";
 	wc.hInstance = hInstance;
+	wc.lpszClassName = L"MY_CLASS";
+	wc.style = CS_HREDRAW | CS_VREDRAW;
 
-	RegisterClass(&wc);
+	if (!RegisterClass(&wc)) {
+		MessageBox(0, L"Can't register Window Class", 0, 0);
+		return 0;
+	}
 
-	HWND hWnd;
-	hWnd = CreateWindow(L"MY_CLASS", L"My Window", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 500, 500, 0, 0, hInstance, 0);
-
-	ShowWindow(hWnd, iCmdShow);
-	UpdateWindow(hWnd);
+	CreateWindow(wc.lpszClassName, L"My Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 500, 500, 0, 0, hInstance, 0);
 
 	MSG msg;
 	while (GetMessage(&msg, 0, 0, 0)) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+
 	return 0;
 }
