@@ -1,24 +1,25 @@
 #include <windows.h>
-// Application can't be properly closed
 
-int _stdcall WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
-	WNDCLASS wc;
-
-	wc = {};
+	WNDCLASS wc = {};
 	wc.lpfnWndProc = DefWindowProc;
 	wc.hInstance = hInstance;
 	wc.lpszClassName = L"MY_CLASS";
+	wc.style = CS_HREDRAW | CS_VREDRAW;
 
-	RegisterClass(&wc);
+	if (!RegisterClass(&wc)) {
+		MessageBox(0, L"Can't register Window Class", 0, 0);
+		return 0;
+	}
 
-	CreateWindow(L"MY_CLASS", L"MinimalWindow", WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, 0, 0, hInstance, 0);
+	CreateWindow(wc.lpszClassName, L"My Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 500, 500, 0, 0, hInstance, 0);
 
 	MSG msg;
-	while (true) {
-		GetMessage(&msg, 0, 0, 0);
+	while (GetMessage(&msg, 0, 0, 0)) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
 
+	return 0;
 }
