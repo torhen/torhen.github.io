@@ -4,19 +4,22 @@
 // define dimension and framerate
 const int BMPW = 20;
 const int BMPH = 20;
-int gFrameRate =  2;
+int gFrameRate = 2;
 
 BITMAPINFO gBmi;
 UINT32 gPixel[BMPW * BMPH];
 long int gFrameCount = 0;
 
 int update() {
-	int n = gFrameCount % BMPW;
-	for(int y = 0; y < BMPH; y++) {
-		for (int x = 0; x < BMPW; x++) {
-			gPixel[x + y * BMPW] = RGB(rand(), rand(), rand());
-		}
+	int color;
+	if(gFrameCount % 2) {
+		color = 0x00FF0000; // red
 	}
+	else {
+		color = 0x000000ff; // blue
+	}
+	gPixel[0 + 0 * BMPW] = color;
+
 	return 0;
 }
 
@@ -31,7 +34,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 		// initialize BITMAPINFO
 		gBmi.bmiHeader.biSize = sizeof(gBmi.bmiHeader);
 		gBmi.bmiHeader.biWidth = BMPW;
-		gBmi.bmiHeader.biHeight = BMPH;
+		gBmi.bmiHeader.biHeight = -BMPH; // minus makes ero UPPER left
 		gBmi.bmiHeader.biPlanes = 1;
 		gBmi.bmiHeader.biBitCount = 32;
 		return 0;
@@ -65,13 +68,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int iCmd
 	}
 
 	// Create Window
-	hWnd = CreateWindow(L"MY_CLASS", L"Constant Frame Rate", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 
+	hWnd = CreateWindow(L"MY_CLASS", L"Constant Frame Rate", WS_OVERLAPPEDWINDOW | WS_VISIBLE,
 		CW_USEDEFAULT, CW_USEDEFAULT, 500, 500, 0, 0, hInstance, 0);
 
 	// Get frequency of performance counter
 	QueryPerformanceFrequency(&liSecond);
 
-	while(1) {
+	while (1) {
 
 		// Get start value of performance counter
 		QueryPerformanceCounter(&liStart);
