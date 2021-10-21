@@ -17,12 +17,11 @@ void draw_buffer(HDC hDC, int x, int y) {
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
-	switch (Msg) {
 
+	switch (Msg) {
 	case WM_CLOSE:
-	{
 		PostQuitMessage(0);
-	}return 0;
+		return 0;
 	}
 
 	return DefWindowProc(hWnd, Msg, wParam, lParam);
@@ -58,7 +57,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
 		hDC = GetDC(hWnd);
 		RECT cr;
 		GetClientRect(hWnd, &cr);
-		paint(hDC, cr.right, cr.bottom);
+		draw_buffer(hDC, cr.right, cr.bottom);
 		ReleaseDC(hWnd, hDC);
 
 	}
