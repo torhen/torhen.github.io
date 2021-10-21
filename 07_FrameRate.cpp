@@ -38,6 +38,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
 	wc.hInstance = hInstance;
 	wc.lpszClassName = L"MY_CLASS";
 	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.hCursor = LoadCursor(0, IDC_ARROW);
 
 	if (!RegisterClass(&wc)) {
 		MessageBox(0, L"Can't register Window Class", 0, 0);
