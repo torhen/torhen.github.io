@@ -1,20 +1,19 @@
 #include <windows.h>
 
 LRESULT CALLBACK wnd_proc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
+	PAINTSTRUCT ps;
+	HDC hDC;
+	
 	switch (Msg) {
 		case WM_PAINT:
-		{
-			PAINTSTRUCT ps;
-			HDC hDC;
 			hDC = BeginPaint(hWnd, &ps);
 			DrawText(hDC, L"TEST", -1, &ps.rcPaint, 0);
 			EndPaint(hWnd, &ps);
-		}break;
+			return 0;
 
 		case WM_CLOSE:
-		{
 			PostQuitMessage(0);
-		}break;
+			return 0;
 		}
 
 	return DefWindowProc(hWnd, Msg, wParam, lParam);
