@@ -5,7 +5,7 @@ const int BMPH = 10;
 long int gFrameCount;
 UINT32 gPixel[BMPW * BMPH];
 
-void paint(HDC hDC, int x, int y) {
+void draw_buffer(HDC hDC, int x, int y) {
 	BITMAPINFO Bmi = {};
 	Bmi.bmiHeader.biSize = sizeof(Bmi.bmiHeader);
 	Bmi.bmiHeader.biWidth = BMPW;
