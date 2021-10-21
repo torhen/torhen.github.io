@@ -8,7 +8,7 @@ long int gFrameCount;
 UINT32 gPixel[BMPW * BMPH];
 
 
-void paint(HDC hDC, int x, int y) {
+void draw_buffer(HDC hDC, int x, int y) {
 	BITMAPINFO Bmi = {};
 	Bmi.bmiHeader.biSize = sizeof(Bmi.bmiHeader);
 	Bmi.bmiHeader.biWidth = BMPW;
@@ -66,7 +66,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
 		hDC = GetDC(hWnd);
 		RECT cr;
 		GetClientRect(hWnd, &cr);
-		paint(hDC, cr.right, cr.bottom);
+		draw_buffer(hDC, cr.right, cr.bottom);
 		ReleaseDC(hWnd, hDC);
 
 
