@@ -20,12 +20,20 @@ void draw_buffer(HDC hDC, int x, int y) {
 }
 
 LRESULT CALLBACK wnd_proc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
+	PAINTSTRUCT ps;
+	HDC hDC;
 	switch (Msg) {
+	case WM_PAINT: 
+		{
+			hDC = BeginPaint(hWnd, &ps);
+			draw_buffer(hDC, ps.rcPaint.right, ps.rcPaint.bottom);
+			EndPaint(hWnd, &ps);
+		}break;
 
-	case WM_CLOSE:
-	{
-		PostQuitMessage(0);
-	}return 0;
+		case WM_CLOSE:
+		{
+			PostQuitMessage(0);
+		}break;
 	}
 
 	return DefWindowProc(hWnd, Msg, wParam, lParam);
@@ -79,6 +87,5 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In
 			Sleep(0);
 		}
 	}
-
 	return 0;
 }
