@@ -19,7 +19,7 @@ void draw_buffer(HDC hDC, int x, int y) {
 	StretchDIBits(hDC, 0, 0, x, y, 0, 0, BMPW, BMPH, gPixel, &Bmi, 0, SRCCOPY);
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK wnd_proc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	switch (Msg) {
 
 	case WM_CLOSE:
@@ -34,7 +34,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	WNDCLASS wc = {};
-	wc.lpfnWndProc = WndProc;
+	wc.lpfnWndProc = wnd_proc;
 	wc.hInstance = hInstance;
 	wc.lpszClassName = L"MY_CLASS";
 	wc.style = CS_HREDRAW | CS_VREDRAW;
