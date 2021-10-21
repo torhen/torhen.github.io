@@ -2,20 +2,20 @@
 
 LRESULT CALLBACK wnd_proc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	switch (Msg) {
-	case WM_PAINT:
-	{
-		PAINTSTRUCT ps;
-		HDC hDC;
-		hDC = BeginPaint(hWnd, &ps);
-		DrawText(hDC, L"TEST", -1, &ps.rcPaint, 0);
-		EndPaint(hWnd, &ps);
-	}break;
+		case WM_PAINT:
+		{
+			PAINTSTRUCT ps;
+			HDC hDC;
+			hDC = BeginPaint(hWnd, &ps);
+			DrawText(hDC, L"TEST", -1, &ps.rcPaint, 0);
+			EndPaint(hWnd, &ps);
+		}break;
 
-	case WM_CLOSE:
-	{
-		PostQuitMessage(0);
-	}break;
-	}
+		case WM_CLOSE:
+		{
+			PostQuitMessage(0);
+		}break;
+		}
 
 	return DefWindowProc(hWnd, Msg, wParam, lParam);
 }
