@@ -9,12 +9,12 @@ LRESULT CALLBACK wnd_proc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 		hDC = BeginPaint(hWnd, &ps);
 		DrawText(hDC, L"TEST", -1, &ps.rcPaint, 0);
 		EndPaint(hWnd, &ps);
-	}return 0;
+	}break;
 
 	case WM_CLOSE:
 	{
 		PostQuitMessage(0);
-	}return 0;
+	}break;
 	}
 
 	return DefWindowProc(hWnd, Msg, wParam, lParam);
