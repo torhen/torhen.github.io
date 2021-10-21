@@ -1,6 +1,6 @@
 #include <windows.h>
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK wnd_proc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	switch (Msg) {
 	case WM_PAINT:
 	{
@@ -23,7 +23,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	WNDCLASS wc = {};
-	wc.lpfnWndProc = WndProc;
+	wc.lpfnWndProc = wnd_proc;
 	wc.hInstance = hInstance;
 	wc.lpszClassName = L"MY_CLASS";
 	wc.style = CS_HREDRAW | CS_VREDRAW;
