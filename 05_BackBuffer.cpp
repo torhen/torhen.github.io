@@ -7,6 +7,7 @@ UINT32 gPixel[BMPW * BMPH];
 LRESULT CALLBACK wnd_proc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	PAINTSTRUCT ps;
 	HDC hDC;
+	BITMAPINFO Bmi;
 	
 	switch (Msg) {
 		case WM_PAINT:
@@ -14,7 +15,7 @@ LRESULT CALLBACK wnd_proc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 			HDC hDC;
 			hDC = BeginPaint(hWnd, &ps);
 
-			BITMAPINFO Bmi = {};
+			Bmi = {};
 			Bmi.bmiHeader.biSize = sizeof(Bmi.bmiHeader);
 			Bmi.bmiHeader.biWidth = BMPW;
 			Bmi.bmiHeader.biHeight = -BMPH;
