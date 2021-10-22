@@ -21,16 +21,14 @@ LRESULT CALLBACK wnd_proc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	HDC hDC;
 
 	switch (Msg) {
-		case WM_PAINT:
-		{
-			hDC = BeginPaint(hWnd, &ps);
-			draw_buffer(hDC, ps.rcPaint.right, ps.rcPaint.bottom);
-			EndPaint(hWnd, &ps);
-		}break;
-		case WM_CLOSE:
-		{
-			PostQuitMessage(0);
-		}break;
+	case WM_PAINT:
+		hDC = BeginPaint(hWnd, &ps);
+		draw_buffer(hDC, ps.rcPaint.right, ps.rcPaint.bottom);
+		EndPaint(hWnd, &ps);
+		return 0;
+	case WM_CLOSE:
+		PostQuitMessage(0);
+		return 0;
 	}
 
 	return DefWindowProc(hWnd, Msg, wParam, lParam);
