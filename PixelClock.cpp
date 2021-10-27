@@ -139,7 +139,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		Sleep(1);
+
 		gFrameCount++;
 		hDC = GetDC(hWnd);
 
@@ -150,6 +150,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 		while (1) {
 			QueryPerformanceCounter(&liNow);
+			Sleep(1);
 			if (liNow.QuadPart > liStart.QuadPart + liSecond.QuadPart / gFrameRate) {
 				break;
 			}
