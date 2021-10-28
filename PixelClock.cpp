@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <time.h>
-#include <stdio.h>
+
+#pragma comment(lib, "winmm.lib") // for timeBeginPeriod
 
 const int BMPW = 27;
 const int BMPH = 9;
@@ -150,6 +151,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 		while (1) {
 			QueryPerformanceCounter(&liNow);
+			timeBeginPeriod(1);
 			Sleep(1);
 			if (liNow.QuadPart > liStart.QuadPart + liSecond.QuadPart / gFrameRate) {
 				break;
