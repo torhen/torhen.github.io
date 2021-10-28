@@ -6,7 +6,7 @@
 const int BMPW = 27;
 const int BMPH = 9;
 long int gFrameCount;
-int gFrameRate = 2;
+int gFrameRate = 1;
 UINT32 gPixel[BMPW * BMPH];
 
 void background() {
