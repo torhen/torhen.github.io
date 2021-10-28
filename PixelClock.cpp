@@ -114,6 +114,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	LARGE_INTEGER liSecond, liStart, liNow;
 	QueryPerformanceFrequency(&liSecond);
 
+	timeBeginPeriod(1); // set scheduler granularity to 1 ms
+
 	wc.hInstance = hInstance;
 	wc.lpfnWndProc = wnd_proc;
 	wc.lpszClassName = L"MY_CLASS";
@@ -151,7 +153,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 		while (1) {
 			QueryPerformanceCounter(&liNow);
-			timeBeginPeriod(1);
 			Sleep(1);
 			if (liNow.QuadPart > liStart.QuadPart + liSecond.QuadPart / gFrameRate) {
 				break;
