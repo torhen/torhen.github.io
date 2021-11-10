@@ -19,8 +19,8 @@ const UINT32 LIGHT_GRAY = 0xFFAAAAAA;
 const UINT32 DARK_GRAY = 0xFF444444;
 const UINT32 YELLOW = 0xFFFFFF00;
 
+// used for creating bullets
 int gGunPosition;
-int gGameFinished = 0;
 
 void draw_background(UINT32 color = 0) {
 	for (int i = 0; i < BMPW * BMPH; i++) {
@@ -206,12 +206,6 @@ public:
 			m_vector[i].update();
 		}
 
-		// check if touched the ground
-		if (get_max_y() > BMPH) {
-			for (int i = 0; i < sprl; i++) {
-				init();
-			}
-		}
 	}
 
 	void draw() {
@@ -243,6 +237,14 @@ public:
 ###############\
 ###############\
 ";
+	RECT get_rect() {
+		RECT r;
+		r.left = (LONG)m_posx;
+		r.right = (LONG)m_posx + m_width;
+		r.top = (LONG)m_posy;
+		r.bottom = (LONG)m_posy + m_height;
+		return r;
+	}
 
 	void update() {
 		int posx = int(m_posx);
@@ -279,7 +281,7 @@ public:
 class CBullet {
 public:
 	double m_posx = 20;
-	double m_posy = BMPH - 10;
+	double m_posy = (double)((LONG)BMPH - (LONG)10);
 	int m_width = 1;
 	int m_height = 2;
 	double m_velocity = 2;
@@ -375,10 +377,55 @@ void init() {
 }
 
 
-void update() {
-	if (gGameFinished) {
-		return;
+void collision_bullets_sprites(CBulletVector* pbv, CSpriteVector* psv) {
+	// handle only first collision
+	for (int b = 0; b < pbv->size(); b++) {
+		for (int s = 0; s < psv->size(); s++) {
+
+			
+			CBullet bullet = pbv->get_bullet(b);
+			RECT r1 = bullet.get_rect();
+			RECT r2 = sprite_vector.get_sprite(s).get_rect();
+
+
+			int x = r1.left;
+			int y = r1.bottom;
+
+			if (x > r2.left && x < r2.right && y > r2.top && y < r2.bottom) {
+				psv->del(s);
+				pbv->del(b);
+				return;
+			}
+
+		}
 	}
+
+}
+
+int collision_sprites_shooter(CSpriteVector* psv, CShooter* ps) {
+	RECT r1 = ps->get_rect();
+	// calc coordinates of gun top 
+	int width = r1.right - r1.left;
+	int x = r1.left + width/1;
+	int y = r1.top;
+	for (int i = 0; i < psv->size(); i++) {
+		RECT r2 = psv->get_sprite(i).get_rect();
+		if (x > r2.left && x < r2.right && y > r2.top && y < r2.bottom) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int collistion_sprites_floor(CSpriteVector *psv) {
+
+	if (psv->get_max_y() > BMPH) {
+		return 1;
+	}
+	return 0;
+}
+
+void update() {
 
 	draw_background();
 
@@ -386,35 +433,29 @@ void update() {
 	bullet_vector.draw();
 
 	sprite_vector.update();
-	shooter.update();
-
 	sprite_vector.draw();
+
+	shooter.update();
 	shooter.draw();
 
-	for (int b = 0; b < bullet_vector.size(); b++) {
-		for (int s = 0; s < sprite_vector.size(); s++) {
-			CBullet bullet = bullet_vector.get_bullet(b);
-			RECT r1 = bullet.get_rect();
-			RECT r2 = sprite_vector.get_sprite(s).get_rect();
+	collision_bullets_sprites(&bullet_vector, &sprite_vector);
 
-			int x = r1.left;
-			int y = r1.bottom;
-
-			if (x > r2.left && x < r2.right && y > r2.top && y < r2.bottom) {
-				sprite_vector.del(s);
-				bullet_vector.del(b);
-				return;
-			}
-		}
+	if (collision_sprites_shooter(&sprite_vector, &shooter)) {
+		sprite_vector.init();
 	}
 
+
+	if (collistion_sprites_floor(&sprite_vector)) {
+		sprite_vector.init();
+	}
 
 }
 
 
 LRESULT CALLBACK wnd_proc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 
-	switch (Msg) {;
+	switch (Msg) {
+		;
 		return 0;
 	case WM_CLOSE:
 		PostQuitMessage(0);
