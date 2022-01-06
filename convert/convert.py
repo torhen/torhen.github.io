@@ -46,5 +46,6 @@ def convert():
     lines = s.split('\n')
     r = '<table border=1>'
     for line in lines:
-        r += conv_line(line) + '<br>'
-    document.getElementById('out').innerHTML = r + '</table>'
+        r += conv_line(line)
+    r += '</table>'
+    document.getElementById('out').innerHTML = r

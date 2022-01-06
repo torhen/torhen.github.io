@@ -1,6 +1,6 @@
 <html>
     <script type='module'>
-        import * as convert from './__target__/convert.js'
+        import * as test from './__target__/convert.js'
         window.test = test
     </script>
     <body>
@@ -8,7 +8,7 @@
 600000 200000
 600000 200000</textarea>
         <br><br>
-        <button onClick='convert.convert()'>convert</button><br><br>
+        <button onClick='test.convert()'>convert</button><br><br>
         <div id='out'>...</div>
     </body>
 </html>
