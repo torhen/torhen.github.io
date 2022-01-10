@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2022-01-09 11:54:06
+// Transcrypt'ed from Python, 2022-01-10 01:43:16
 var time = {};
 import {AssertionError, AttributeError, BaseException, DeprecationWarning, Exception, IndexError, IterableError, KeyError, NotImplementedError, RuntimeWarning, StopIteration, UserWarning, ValueError, Warning, __JsIterator__, __PyIterator__, __Terminal__, __add__, __and__, __call__, __class__, __envir__, __eq__, __floordiv__, __ge__, __get__, __getcm__, __getitem__, __getslice__, __getsm__, __gt__, __i__, __iadd__, __iand__, __idiv__, __ijsmod__, __ilshift__, __imatmul__, __imod__, __imul__, __in__, __init__, __ior__, __ipow__, __irshift__, __isub__, __ixor__, __jsUsePyNext__, __jsmod__, __k__, __kwargtrans__, __le__, __lshift__, __lt__, __matmul__, __mergefields__, __mergekwargtrans__, __mod__, __mul__, __ne__, __neg__, __nest__, __or__, __pow__, __pragma__, __pyUseJsNext__, __rshift__, __setitem__, __setproperty__, __setslice__, __sort__, __specialattrib__, __sub__, __super__, __t__, __terminal__, __truediv__, __withblock__, __xor__, abs, all, any, assert, bool, bytearray, bytes, callable, chr, copy, deepcopy, delattr, dict, dir, divmod, enumerate, filter, float, getattr, hasattr, input, int, isinstance, issubclass, len, list, map, max, min, object, ord, pow, print, property, py_TypeError, py_iter, py_metatype, py_next, py_reversed, py_typeof, range, repr, round, set, setattr, sorted, str, sum, tuple, zip} from './org.transcrypt.__runtime__.js';
 import * as __module_time__ from './time.js';
@@ -19,6 +19,7 @@ export var App =  __class__ ('App', [object], {
 		self.synth.speak (su);
 	});},
 	get test () {return __get__ (this, function (self) {
+		alert (schedule_text);
 		self.speak ('test');
 	});},
 	get py_update () {return __get__ (this, function (self) {
@@ -119,6 +120,6 @@ export var App =  __class__ ('App', [object], {
 	});}
 });
 export var app = App ();
-app.set_schedule ('\n15;  Übung begint gleich\n15;  Rechtes Bein zum Po\n15;  Noch 15 Sekunden\n15;  Rechtes Bein nach hinten\n15;  Noch 15 Sekunden\n15;  Linkes Bein zum Po\n15;  Noch 15 Sekunden\n15;  Linkes Bein nach hinten\n15;  Noch 15 Sekunden\n15;  Rechtes Bein anwinkeln und Fuss bewegen\n15;  Noch 15 Sekunden\n15;  Rechtes Bein nach hinten\n15;  Noch 15 Sekunden\n15;  Linkes Bein anwinkeln und Fuss bewegen\n15;  Noch 15 Sekunden\n15;  Linkes Bein nach hinten\n15;  Noch 15 Sekunden\n15;  Reches Bein Spinne\n15;  Noch 15 Sekunden\n15;  Linkes Bein Spinne\n15;  Noch 15 Sekunden\n15;  Langsame Kniebeugen\n15;  Noch 15 Sekunden\n15;  Rumpfbeugen\n15;  Noch 15 Sekunden\n15;  Kniebeugen\n15;  Noch 15 Sekunden\n15;  Rumpfbeugen\n15;  Noch 15 Sekunden\n15;  Rumpfkreisen rechts herum\n15;  Rumpfkreisen links herum\n15;  Am Türrahmen abstützen und hoch und runter\n15;  Noch 15 Sekunden\n15;  Armkreisen rechts\n15;  Noch 15 Sekunden\n15;  Armkreisen links\n15;  Noch 15 Sekunden\n15;  Rechte Hand an Türrahmen drücken\n15;  Noch 15 Sekunden\n15;  Linke Hand an Türrahmen drücken\n15;  Noch 15 Sekunden\n15;  Kopfkreisen rechts herum\n15;  Kopfkreisen links herum\n15;  Auf alle viere gehen und langsam absitzen\n15;  Noch 30 Sekunden\n15;  Noch 15 Sekunden\n15;  Gewicht nach hinten verlagern\n15;  Noch 15 Sekunden\n15;  Auf allen vieren Rücken nach oben und unten\n15;  Ende der Übung\n');
+app.set_schedule (schedule_text);
 
 //# sourceMappingURL=training.map
