@@ -4,10 +4,14 @@
 def alert(s): pass
 
 class Console:
-    def log(*args): pass
+    def log(self, *args): pass
 console = Console()
 
 class Dokument():
-    def getElementbyId(id): pass
+    def getElementbyId(self, id): pass
 document = Dokument()
+
+class Window():
+    def requestAnimationFrame(self, f): pass
+window = Window()
 
