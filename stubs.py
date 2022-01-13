@@ -13,5 +13,6 @@ document = Dokument()
 
 class Window():
     def requestAnimationFrame(self, f): pass
+    def setInterval(self, func, ms): pass
 window = Window()
 
