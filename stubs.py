@@ -8,7 +8,7 @@ class Console:
 console = Console()
 
 class Dokument():
-    def getElementbyId(self, id): pass
+    def getElementById(self, id): pass
 document = Dokument()
 
 class Window():
