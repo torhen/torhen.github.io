@@ -4,4 +4,9 @@
         window.app = app;
     </script>
     <canvas id='canvas' width='600' height='500'></canvas>
+    <br>
+    <button id='button_up' onClick='app.game.snake.set_dir(0, -1) '></button><br>
+    <button id='button_left' onClick='app.game.snake.set_dir(-1, 0) '></button>
+    <button id='button_right' onClick='app.game.snake.set_dir(1, 0) '></button><br>
+    <button id='button_down' onClick='app.game.snake.set_dir(0, 1) '></button>
 </html>
