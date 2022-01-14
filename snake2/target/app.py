@@ -71,6 +71,9 @@ class Block:
 
 class Snake:
     def __init__(self):
+        self.reset()
+
+    def reset(self):
         # calc middle
         xm = g_width // 2
         ym = g_height // 2
@@ -78,7 +81,8 @@ class Snake:
         # create initial snake
         self.blocks = []
         initial_block_len = 3
-        for i in range(0, initial_block_len):
+        self.blocks.append(Block(xm , ym, 'lightgreen'))
+        for i in range(1, initial_block_len):
             self.blocks.append(Block(xm - i, ym ))
 
         # initial snake direction
@@ -91,19 +95,41 @@ class Snake:
         self.place_apple()
 
     def set_dir(self, dx, dy):
+
+        # check if it woul be backwards
+        x0 = self.blocks[0].x + dx
+        y0 = self.blocks[0].y + dy
+
+        x1 = self.blocks[1].x
+        y1 = self.blocks[1].y
+        if x0 == x1 and y0 == y1:
+            return
+
         self.dx = dx
         self.dy = dy
 
-    def place_apple(self):
-        x = random.random() * g_width
-        y = random.random() * g_height
+    def is_on_snake(self, x, y):
+        for block in self.blocks:
+            if block.x == x and block.y == y:
+                return True
+        return False
 
-        self.apple.place(x, y)
+    def place_apple(self):
+        while True:
+            x = int(random.random() * g_width)
+            y = int(random.random() * g_height)
+            if not self.is_on_snake(x, y):
+                self.apple.place(x, y)
+                return 
 
     def update(self):
         i = len(self.blocks)
+
+        # save last block coords in case of growing
         x_last, y_last = self.blocks[i-1].x, self.blocks[i-1].y
 
+
+        # update block queue
         for i in range(i - 1, 0, -1):
             self.blocks[i].x, self.blocks[i].y = self.blocks[i - 1].x, self.blocks[i - 1].y
         self.blocks[0].move(self.dx, self.dy)
@@ -114,6 +140,7 @@ class Snake:
             self.growing = False
 
         self.check_apple_coll()
+        self.check_self_coll()
 
     def check_apple_coll(self):
         x0 = self.blocks[0].x
@@ -124,6 +151,18 @@ class Snake:
         if x0 == x1 and y0 == y1:
             self.grow()
             self.place_apple()
+
+    def check_self_coll(self):
+        x0 = self.blocks[0].x
+        y0 = self.blocks[0].y
+
+        for block in self.blocks[1:]:
+            x1 = block.x
+            y1 = block.y
+            if x0 == x1 and y0 == y1:
+                s = f'You achieved {len(self.blocks)} blocks.'
+                alert(s)
+                self.reset()
 
     def grow(self):
         # set flag to grow on next update
