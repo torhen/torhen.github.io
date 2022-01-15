@@ -195,23 +195,6 @@ class Game():
         if e.key == ' ': self.snake.grow()
 
 
-myButton = document.getElementById('button_up')
-myButton.style.width= '600px'
-myButton.style.height = '100px'
-
-myButton = document.getElementById('button_left')
-myButton.style.width= '300px'
-myButton.style.height = '100px'
-
-myButton = document.getElementById('button_right')
-myButton.style.width= '300px'
-myButton.style.height = '100px'
-
-myButton = document.getElementById('button_down')
-myButton.style.width= '600px'
-myButton.style.height = '100px'
-
-
 
 game = Game()
 
