@@ -1,7 +1,5 @@
 from stubs import *  #__: skip
 
-
-
 def change(s):
     price = document.getElementById('price').value
     kw = document.getElementById('kw').value
@@ -50,11 +48,13 @@ def change(s):
     document.getElementById('w').value = round(kw * 1000, 1)
     document.getElementById('kw').value = round(kw, 1)
     document.getElementById('kwh_per_day').value = round(kw * 24, 1)
-    document.getElementById('chf_per_day').value = round(kw * 24 * price,1)
+    document.getElementById('chf_per_day').value = round(kw * 24 * price,2)
 
-    document.getElementById('kwh_per_month').value = round(kw * 24 * 30, 1)
-    document.getElementById('chf_per_month').value = round(kw * 24 * 30  * price, 1)
+    document.getElementById('kwh_per_month').value = round(kw * 24 * 30, 0)
+    document.getElementById('chf_per_month').value = round(kw * 24 * 30  * price, 2)
 
-    document.getElementById('kwh_per_year').value = round(kw * 24 * 365)
-    document.getElementById('chf_per_year').value = round(kw * 24 * 365 * price, 1)
+    document.getElementById('kwh_per_year').value = round(kw * 24 * 365, 0)
+    document.getElementById('chf_per_year').value = round(kw * 24 * 365 * price, 2)
 
+
+change('kw')

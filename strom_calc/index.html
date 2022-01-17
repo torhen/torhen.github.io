@@ -3,32 +3,46 @@
         import * as app from './target/app.js';
         window.app = app;
     </script>
+<h1>Strom Calc</h1>
+<table border='0'>
+    <tr>
+        <td><label for="w">W:</label></td>
+        <td><input type="number" id='w' onChange='app.change("w")'></td>
 
-    <label for="w">W:</label>
-    <input type="number" id='w' onChange='app.change("w")'>
-    <label for="kw">kW:</label>
-    <input type="number" id='kw' onChange='app.change("kw")'>
-    <br>
+        <td><label for="kw">kW:</label></td>
+        <td><input type="number" id='kw' value='1' onChange='app.change("kw")'></td>
+    </tr>
 
-    <label for="price">CHF per kWh</label>
-    <input type="number" id='price' value='0.18' step='0.01' onChange='app.change("price")'>
-    <br>
+    <tr>
+        <td><label for="price">CHF per kWh:</label></td>
+        <td><input type="number" id='price' value='0.18' step='0.01' onChange='app.change("price")'></td>
+    </tr>
 
-    <label for="kwh_per_day">kWh per day:</label>
-    <input type="number" id='kwh_per_day' onChange='app.change("kwh_per_day")'>
-    <label for="chf_per_day">CHF per day:</label>
-    <input type="number" id='chf_per_day' onChange='app.change("chf_per_day")'>
-    <br>
+    <tr>
+        <td><label for="kwh_per_day">kWh per day:</label></td>
+        <td><input type="number" id='kwh_per_day' onChange='app.change("kwh_per_day")'></td>
 
-    <label for="kwh_per_month">kWh per month:</label>
-    <input type="number" id='kwh_per_month' onChange='app.change("kwh_per_month")'>
-    <label for="chf_per_month">CHF per month:</label>
-    <input type="number" id='chf_per_month' onChange='app.change("chf_per_month")'>
-    <br>
+        <td><label for="chf_per_day">CHF per day:</label></td>
+        <td><input type="number" id='chf_per_day' onChange='app.change("chf_per_day")'></td>
+    </tr>
 
-    <label for="kwh_per_year">kWh per year:</label>
-    <input type="number" id='kwh_per_year' onChange='app.change("kwh_per_year")'>
-    <label for="chf_per_year">CHF per year:</label>
-    <input type="number" id='chf_per_year' onChange='app.change("chf_per_year")'>
-    <br>
+    <tr>
+        <td><label for="kwh_per_month">kWh per month:</label></td>
+        <td><input type="number" id='kwh_per_month' onChange='app.change("kwh_per_month")'></td>
+        
+        <td><label for="chf_per_month">CHF per month:</label></td>
+        <td><input type="number" id='chf_per_month' onChange='app.change("chf_per_month")'></td>
+    </tr>
+
+    <tr>
+        <td><label for="kwh_per_year">kWh per year:</label></td>
+        <td><input type="number" id='kwh_per_year' onChange='app.change("kwh_per_year")'></td>       
+  
+        <td><label for="chf_per_year">CHF per year:</label></td>
+        <td><input type="number" id='chf_per_year' onChange='app.change("chf_per_year")'></td>       
+    </tr>
+
+</table>
+
+</table>
 </html>
