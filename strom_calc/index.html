@@ -1,0 +1,34 @@
+<html>
+    <script type='module'>
+        import * as app from './target/app.js';
+        window.app = app;
+    </script>
+
+    <label for="w">W:</label>
+    <input type="number" id='w' onChange='app.change("w")'>
+    <label for="kw">kW:</label>
+    <input type="number" id='kw' onChange='app.change("kw")'>
+    <br>
+
+    <label for="price">CHF per kWh</label>
+    <input type="number" id='price' value='0.18' step='0.01' onChange='app.change("price")'>
+    <br>
+
+    <label for="kwh_per_day">kWh per day:</label>
+    <input type="number" id='kwh_per_day' onChange='app.change("kwh_per_day")'>
+    <label for="chf_per_day">CHF per day:</label>
+    <input type="number" id='chf_per_day' onChange='app.change("chf_per_day")'>
+    <br>
+
+    <label for="kwh_per_month">kWh per month:</label>
+    <input type="number" id='kwh_per_month' onChange='app.change("kwh_per_month")'>
+    <label for="chf_per_month">CHF per month:</label>
+    <input type="number" id='chf_per_month' onChange='app.change("chf_per_month")'>
+    <br>
+
+    <label for="kwh_per_year">kWh per year:</label>
+    <input type="number" id='kwh_per_year' onChange='app.change("kwh_per_year")'>
+    <label for="chf_per_year">CHF per year:</label>
+    <input type="number" id='chf_per_year' onChange='app.change("chf_per_year")'>
+    <br>
+</html>
