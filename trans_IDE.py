@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 import subprocess
 import webbrowser
 import os
+import pathlib
 
 server_pid = 0
 
@@ -18,14 +19,41 @@ def load():
     with open('app.py') as fin:
         s = fin.read()
         window['-EDIT2-'].update(s)
+        
+def create_starter_kit():
+    p = pathlib.Path('index.html')
+    if not p.is_file():
+        
+        s = """\
+    <html>       
+    <script type='module'>
+    import * as app from './target/app.js';
+    window.app = app
+    </script>
+    <body>
+      <h1>Transcrypt</h1>
+      <button onClick='app.test()'>test</button>
+    </body>
+    </html>
+        """
+        p.write_text(s)
+        
+    p = pathlib.Path('app.py')
+    if not p.is_file():
+        
+        s = """\
+def test():
+    alert('test')
+        """
+        p.write_text(s)
 
 layout = [
-    [sg.Button('server', key='-SERVER-'), sg.Button('run', key='-RUN-')],
+    [sg.Button('start server', key='-SERVER-'), sg.Button('RUN', key='-RUN-')],
     [
         sg.Multiline('html', size=size1,  key='-EDIT1-', font=font), 
         sg.Multiline('python', size=size1,  key='-EDIT2-', font=font)
     ],
-    [sg.Multiline('html', size=size2,  key='-EDIT3-')],
+    [sg.Multiline('', size=size2,  key='-EDIT3-', reroute_stdout = True)],
 
 ]
 
@@ -34,6 +62,7 @@ window = sg.Window('Window Title', layout, resizable=True, finalize=True)
 window.bind('<Configure>',"Event")
 
 #initial load
+create_starter_kit()
 load()
 
 while True:
@@ -72,7 +101,6 @@ while True:
         last_word = s.split()[-1].strip()
         if last_word == 'Ready':
             webbrowser.open(url='http://localhost:8000/', new=1, autoraise=True)
-
 
 
 window.close()
