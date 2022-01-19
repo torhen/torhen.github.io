@@ -66,8 +66,12 @@ while True:
 
         s =subprocess.run(['transcrypt', '-b', '-m', '-n', '-od', 'target', 'app.py'], capture_output=True)
         s = s.stdout.decode("latin-1") 
+        
         window['-EDIT3-'].update(s)
-        webbrowser.open(url='http://localhost:8000/', new=1, autoraise=True)
+        
+        last_word = s.split()[-1].strip()
+        if last_word == 'Ready':
+            webbrowser.open(url='http://localhost:8000/', new=1, autoraise=True)
 
 
 
