@@ -20,6 +20,12 @@ def load():
         s = fin.read()
         window['-EDIT2-'].update(s)
         
+def start_server():
+    # start http.server
+    s = subprocess.Popen(['python', '-m', 'http.server'], start_new_session=True, shell=True)
+    server_pid = s.pid
+    window['-EDIT3-'].update(f'start server process {server_pid}')
+        
 def create_starter_kit():
     p = pathlib.Path('index.html')
     if not p.is_file():
@@ -46,9 +52,10 @@ def test():
     alert('test')
         """
         p.write_text(s)
-
+        
+        
 layout = [
-    [sg.Button('start server', key='-SERVER-'), sg.Button('RUN', key='-RUN-')],
+    [sg.Button('RUN', key='-RUN-')],
     [
         sg.Multiline('html', size=size1,  key='-EDIT1-', font=font), 
         sg.Multiline('python', size=size1,  key='-EDIT2-', font=font)
@@ -64,6 +71,9 @@ window.bind('<Configure>',"Event")
 #initial load
 create_starter_kit()
 load()
+   
+# sart http server   
+start_server()
 
 while True:
     event, values = window.read()
@@ -74,12 +84,6 @@ while True:
         window['-EDIT1-'].expand(expand_x=True,expand_y=True)
         window['-EDIT2-'].expand(expand_x=True,expand_y=True)
         window['-EDIT3-'].expand(expand_x=True,expand_y=True)
-
-
-    if event == '-SERVER-':
-        s = subprocess.Popen(['python', '-m', 'http.server'], start_new_session=True, shell=True)
-        server_pid = s.pid
-        window['-EDIT3-'].update(f'start server process {server_pid}')
 
     if event == '-RUN-':
 
@@ -92,7 +96,7 @@ while True:
         with open('app.py', 'w') as fout:
             fout.write(s)
 
-
+        # transcryp the python code
         s =subprocess.run(['transcrypt', '-b', '-m', '-n', '-od', 'target', 'app.py'], capture_output=True)
         s = s.stdout.decode("latin-1") 
         
