@@ -21,8 +21,10 @@ def load():
         window['-EDIT2-'].update(s)
         
 def start_server():
+    # get current folder
+    cur_folder = os.path.dirname(os.path.realpath(__file__))
     # start http.server
-    s = subprocess.Popen(['python', '-m', 'http.server'], start_new_session=True, shell=True)
+    s = subprocess.Popen(['python', '-m', 'http.server'], start_new_session=True, shell=True, cwd=cur_folder)
     server_pid = s.pid
     window['-EDIT3-'].update(f'start server process {server_pid}')
         
@@ -31,17 +33,16 @@ def create_starter_kit():
     if not p.is_file():
         
         s = """\
-    <html>       
-    <script type='module'>
-    import * as app from './target/app.js';
-    window.app = app
-    </script>
-    <body>
-      <h1>Transcrypt</h1>
-      <button onClick='app.test()'>test</button>
-    </body>
-    </html>
-        """
+<html>       
+<script type='module'>
+  import * as app from './target/app.js';
+  window.app = app
+</script>
+<body>
+  <h1>Transcrypt</h1>
+  <button onClick='app.test()'>test</button>
+</body>
+</html>"""
         p.write_text(s)
         
     p = pathlib.Path('app.py')
@@ -72,7 +73,7 @@ window.bind('<Configure>',"Event")
 create_starter_kit()
 load()
    
-# sart http server   
+# start http server   
 start_server()
 
 while True:
@@ -86,7 +87,6 @@ while True:
         window['-EDIT3-'].expand(expand_x=True,expand_y=True)
 
     if event == '-RUN-':
-
         # save files
         s =window['-EDIT1-'].get()
         with open('index.html', 'w') as fout:
