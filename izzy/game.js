@@ -2,7 +2,7 @@
 
 // Constants
 const SPEED = 300
-const JUMP = 520    
+const JUMP = 550   
 const SNAIL_SPEED = 400
 const GROUND = 450
 
