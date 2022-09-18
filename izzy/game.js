@@ -2,7 +2,7 @@
 
 // Constants
 const SPEED = 300
-const JUMP = 550   
+const JUMP = 560 
 const SNAIL_SPEED = 400
 const GROUND = 450
 
@@ -128,6 +128,8 @@ onUpdate('snail', (s) =>{
 
         if(s.pos.x  > p && s.pos.x < p + 30){
             player.jump(JUMP)
+            // same position as before
+            player.pos.x = width()/2
     }
 }
 })
