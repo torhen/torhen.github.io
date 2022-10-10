@@ -179,9 +179,9 @@ addLevel([
 ],{
     width : RASTER,
     height : RASTER,
-    x : () => [rect(RASTER, RASTER), color(wall_color), area(), solid(), 'wall'],
-    f : () => [rect(RASTER, RASTER), color(wall_color), area(), solid(), 'floor'],
-    r : () => [rect(RASTER, RASTER), color(wall_color), area(), solid(), 'roof'],
+    x : () => [rect(RASTER, RASTER), color(wall_color), area(), solid(), outline(1), 'wall'],
+    f : () => [rect(RASTER, RASTER), color(wall_color), area(), solid(), outline(1),'floor'],
+    r : () => [rect(RASTER, RASTER), color(wall_color), area(), solid(), outline(1),'roof'],
     o : () => [rect(RASTER, RASTER), color([0,0,130]), outline(1)]
 })
 
