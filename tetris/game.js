@@ -6,6 +6,7 @@ let g_stop = false
 const wall_color = [150,150,150]
 const bg_color = []
 let falling = false
+let moves = 0
 
 kaboom({
     background : bg_color
@@ -273,6 +274,7 @@ function deleteRow(nRow){
 }
   
 function newBrick(){
+    moves = 0
     rand_brick(8 * RASTER, 3  * RASTER)
 }
 
@@ -287,6 +289,7 @@ function rotateSave(){
 
 function downSave(){
     let dy = 0.5
+    moves = moves + 1
     move_brick(0, dy)
     if( isColliding('brick', 'floor')){
         move_brick(0, -dy)
@@ -382,7 +385,10 @@ onTouchStart((id, pos) =>{
     }
 
     if (downButton.hasPoint(pos)){
-        falling = true
+        if(moves > 2){
+            falling = true
+        }
+        
     }
 })
 
