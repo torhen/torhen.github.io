@@ -422,7 +422,7 @@ onKeyPress('space', () =>{
 })
 
 onKeyDown('down', () =>{
-    falling = true 
+    downSave()
 })
 
 onKeyPressRepeat('right', () =>{
