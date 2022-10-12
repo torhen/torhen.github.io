@@ -381,11 +381,22 @@ onTouchStart((id, pos) =>{
         rotateSave()
     }
     if (downButton.hasPoint(pos)){
-        for(let i=0; i<100; i++){
-            if(downSave()){
-                return
-            }
-        }
+        downSave()
+        downSave()
+    }
+})
+
+// onTouchEnd((id, pos) =>{
+//     if (downButton.hasPoint(pos)){
+//         downSave()
+//         downSave()
+//     }
+// })
+
+onTouchMove((id, pos) =>{
+    if ( pos.y < 24 * RASTER ){
+        downSave()
+        downSave()
     }
 })
 
@@ -410,11 +421,11 @@ onKeyDown('down', () =>{
     downSave()   
 })
 
-onKeyPress('right', () =>{
+onKeyPressRepeat('right', () =>{
     sideSave(1)
 })
 
-onKeyPress('left', () =>{
+onKeyPressRepeat('left', () =>{
     sideSave(-1)
 })
 
