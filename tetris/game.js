@@ -407,7 +407,7 @@ onUpdate('brick', (b) => {
 
 onTouchEnd((id, pos) =>{
     if (downButton.hasPoint(pos)){
-        falling = false
+        //falling = false
     }
 })
 
