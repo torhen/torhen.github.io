@@ -5,6 +5,7 @@ const COLUMNS = 9
 let g_stop = false
 const wall_color = [150,150,150]
 const bg_color = []
+let falling = false
 
 kaboom({
     background : bg_color
@@ -250,6 +251,8 @@ function freeze(){
     for(let nRow of complRows){
         deleteRow(nRow)
     }
+
+    falling = false
 }
 
 function deleteRow(nRow){
@@ -282,23 +285,22 @@ function rotateSave(){
     }
 }
 
-function downSave(){
-    const dy = 0.5
+function downSave(dy){
+    if(dy == undefined){
+        dy = 0.5
+    }
     move_brick(0, dy)
     if( isColliding('brick', 'floor')){
         move_brick(0, -dy)
         freeze()
-            newBrick()
-        return true
+        newBrick()
     }
 
     if( isCollidingBrick() ){
         move_brick(0, -dy)
         freeze()
         newBrick()
-        return true
     }
-    return false
 }
 
 function sideSave(dx){
@@ -380,18 +382,24 @@ onTouchStart((id, pos) =>{
     if (rotateButton.hasPoint(pos)){
         rotateSave()
     }
+
     if (downButton.hasPoint(pos)){
-        downSave()
-        downSave()
+        falling = true
     }
 })
 
-// onTouchEnd((id, pos) =>{
-//     if (downButton.hasPoint(pos)){
-//         downSave()
-//         downSave()
-//     }
-// })
+onUpdate('brick', (b) => {
+    if(falling == true){
+        // determines fast falling
+        downSave(0.2)
+    }
+})
+
+onTouchEnd((id, pos) =>{
+    if (downButton.hasPoint(pos)){
+        falling = false
+    }
+})
 
 onTouchMove((id, pos) =>{
     if ( pos.y < 24 * RASTER ){
@@ -417,8 +425,7 @@ onKeyPress('space', () =>{
 })
 
 onKeyDown('down', () =>{
-    downSave()
-    downSave()   
+    falling = true 
 })
 
 onKeyPressRepeat('right', () =>{
