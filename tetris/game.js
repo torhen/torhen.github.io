@@ -411,13 +411,13 @@ onTouchEnd((id, pos) =>{
     }
 })
 
-onKeyPress('s', () =>{
-    if(g_stop == true){
-        g_stop = false
-    }else{
-        g_stop = true
-    }
-})
+// onKeyPress('s', () =>{
+//     if(g_stop == true){
+//         g_stop = false
+//     }else{
+//         g_stop = true
+//     }
+// })
 
 onKeyPress('up', () =>{
        rotateSave() 
