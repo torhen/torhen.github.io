@@ -1,6 +1,6 @@
 import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs"
 
-const RASTER = 30
+const RASTER = 25
 const COLUMNS = 9
 let g_stop = false
 const wall_color = [150,150,150]
@@ -270,7 +270,7 @@ function deleteRow(nRow){
 }
   
 function newBrick(){
-    rand_brick(7 * RASTER, 3  * RASTER)
+    rand_brick(8 * RASTER, 3  * RASTER)
 }
 
 function rotateSave(){
@@ -288,14 +288,17 @@ function downSave(){
     if( isColliding('brick', 'floor')){
         move_brick(0, -dy)
         freeze()
-        newBrick()
+            newBrick()
+        return true
     }
 
     if( isCollidingBrick() ){
         move_brick(0, -dy)
         freeze()
         newBrick()
+        return true
     }
+    return false
 }
 
 function sideSave(dx){
@@ -307,8 +310,6 @@ function sideSave(dx){
 
     if( isCollidingBrick() ){
         move_brick(-dx, 0)
-        freeze()
-        newBrick()
     }
 }
 
@@ -343,6 +344,51 @@ function checkRowCompletion(){
     return res
 }
 
+// Touch Control
+const leftButton = add([
+    rect(4 * RASTER, 3* RASTER),
+    pos(2* RASTER, 26* RASTER),
+    area()
+])
+
+const rightButton = add([
+    rect(4 * RASTER, 3 * RASTER),
+    pos(9* RASTER, 26* RASTER),
+    area()
+])
+
+const rotateButton = add([
+    rect(4 * RASTER, 3* RASTER),
+    pos(2* RASTER, 30* RASTER),
+    area()
+])
+
+const downButton = add([
+    rect(4 * RASTER, 3 * RASTER),
+    pos(9* RASTER, 30 * RASTER),
+    area()
+])
+
+onTouchStart((id, pos) =>{
+    if (leftButton.hasPoint(pos)){
+        sideSave(-1)
+    }
+    if (rightButton.hasPoint(pos)){
+        sideSave(1)
+    }
+
+    if (rotateButton.hasPoint(pos)){
+        rotateSave()
+    }
+    if (downButton.hasPoint(pos)){
+        for(let i=0; i<100; i++){
+            if(downSave()){
+                return
+            }
+        }
+    }
+})
+
 onKeyPress('s', () =>{
     if(g_stop == true){
         g_stop = false
@@ -352,7 +398,7 @@ onKeyPress('s', () =>{
 })
 
 onKeyPress('up', () =>{
-    rotateSave()
+       rotateSave() 
 })
 
 onKeyPress('space', () =>{
@@ -361,6 +407,7 @@ onKeyPress('space', () =>{
 
 onKeyDown('down', () =>{
     downSave()
+    downSave()   
 })
 
 onKeyPress('right', () =>{
@@ -371,4 +418,9 @@ onKeyPress('left', () =>{
     sideSave(-1)
 })
 
+
+add([text('<'), pos(3 * RASTER, 26 * RASTER)])
+add([text('>'), pos(10 * RASTER, 26 * RASTER)])
+add([text('r'), pos(3 * RASTER, 30 * RASTER)])
+add([text('v'), pos(10 * RASTER, 30 * RASTER)])
 newBrick()
