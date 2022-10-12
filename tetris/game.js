@@ -285,10 +285,8 @@ function rotateSave(){
     }
 }
 
-function downSave(dy){
-    if(dy == undefined){
-        dy = 0.5
-    }
+function downSave(){
+    let dy = 0.5
     move_brick(0, dy)
     if( isColliding('brick', 'floor')){
         move_brick(0, -dy)
@@ -388,23 +386,22 @@ onTouchStart((id, pos) =>{
     }
 })
 
+let myTime = 0
 onUpdate('brick', (b) => {
+    myTime = myTime + dt()
     if(falling == true){
         // determines fast falling
-        downSave(0.2)
+        if(myTime > 0.2){
+            downSave()
+            myTime = 0
+        }
+        
     }
 })
 
 onTouchEnd((id, pos) =>{
     if (downButton.hasPoint(pos)){
         falling = false
-    }
-})
-
-onTouchMove((id, pos) =>{
-    if ( pos.y < 24 * RASTER ){
-        downSave()
-        downSave()
     }
 })
 
