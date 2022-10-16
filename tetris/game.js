@@ -275,6 +275,7 @@ function deleteRow(nRow){
 }
   
 function newBrick(){
+    falling = false
     rand_brick(8 * RASTER, 5  * RASTER)
 }
 
