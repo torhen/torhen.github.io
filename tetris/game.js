@@ -1,6 +1,6 @@
 import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs"
 
-const RASTER = 25
+const RASTER = 20
 const COLUMNS = 9
 let g_stop = false
 const wall_color = [150,150,150]
