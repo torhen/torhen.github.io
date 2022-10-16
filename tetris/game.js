@@ -390,6 +390,12 @@ onTouchStart((id, pos) =>{
     }
 })
 
+onTouchMove((id, pos) =>{
+    if (downButton.hasPoint(pos)){
+            downSave()
+    }
+})
+
 let myFrames = 0
 onUpdate('brick', (b) => {
     myFrames = myFrames + 1
