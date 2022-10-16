@@ -388,12 +388,12 @@ onTouchStart((id, pos) =>{
     }
 })
 
-let myTime = 0
+let myFrames = 0
 onUpdate('brick', (b) => {
-    myTime = myTime + dt()
-    if(falling == true && myTime > 0.1){
+    myFrames = myFrames + 1
+    if(falling == true && myFrames > 3){
         downSave()
-        myTime = 0
+        myFrames = 0
     }
 })
 
