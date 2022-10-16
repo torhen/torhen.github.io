@@ -275,7 +275,7 @@ function deleteRow(nRow){
 }
   
 function newBrick(){
-    rand_brick(8 * RASTER, 3  * RASTER)
+    rand_brick(8 * RASTER, 5  * RASTER)
 }
 
 function rotateSave(){
