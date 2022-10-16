@@ -393,6 +393,9 @@ onUpdate('brick', (b) => {
     myFrames = myFrames + 1
     if(falling == true && myFrames > 3){
         downSave()
+        if( ! Number.isInteger(b.ry / RASTER) ){
+            downSave()
+        }
         myFrames = 0
     }
 })
@@ -436,4 +439,5 @@ add([text('<'), pos(3 * RASTER, 26 * RASTER)])
 add([text('>'), pos(10 * RASTER, 26 * RASTER)])
 add([text('r'), pos(3 * RASTER, 30 * RASTER)])
 add([text('v'), pos(10 * RASTER, 30 * RASTER)])
+
 newBrick()
