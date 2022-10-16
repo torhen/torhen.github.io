@@ -1,6 +1,6 @@
 import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs"
 
-const RASTER = 20
+const RASTER = 25
 const COLUMNS = 9
 let g_stop = false
 const wall_color = [150,150,150]
@@ -388,36 +388,31 @@ onTouchStart((id, pos) =>{
         if(moves > 2){
             falling = true
         }
-        
     }
 })
 
 let myTime = 0
 onUpdate('brick', (b) => {
     myTime = myTime + dt()
-    if(falling == true){
-        // determines fast falling
-        if(myTime > 0.2){
-            downSave()
-            myTime = 0
-        }
-        
+    if(falling == true && myTime > 0.1){
+        downSave()
+        myTime = 0
     }
 })
 
 onTouchEnd((id, pos) =>{
     if (downButton.hasPoint(pos)){
-        //falling = false
+        falling = false
     }
 })
 
-// onKeyPress('s', () =>{
-//     if(g_stop == true){
-//         g_stop = false
-//     }else{
-//         g_stop = true
-//     }
-// })
+onKeyPress('s', () =>{
+    if(g_stop == true){
+        g_stop = false
+    }else{
+        g_stop = true
+    }
+})
 
 onKeyPress('up', () =>{
        rotateSave() 
