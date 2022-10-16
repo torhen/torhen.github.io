@@ -385,7 +385,8 @@ onTouchStart((id, pos) =>{
     }
 
     if (downButton.hasPoint(pos)){
-            falling = true
+            //falling = true
+            downSave()
     }
 })
 
