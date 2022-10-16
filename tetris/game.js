@@ -316,11 +316,13 @@ function sideSave(dx){
     }
 }
 
-loop(0.5, () => {
-    if(g_stop == false){
-        downSave()
-    }
-})
+// loop(0.5, () => {
+//     if(g_stop == false){
+//         downSave()
+//     }
+// })
+
+
 
 function checkRowCompletion(){
     let l = get('brick')
@@ -385,26 +387,32 @@ onTouchStart((id, pos) =>{
     }
 
     if (downButton.hasPoint(pos)){
-            //falling = true
-            downSave()
+            falling = true
     }
 })
 
-onTouchMove((id, pos) =>{
+onTouchEnd((id, pos) =>{
     if (downButton.hasPoint(pos)){
-            downSave()
+            falling = false
     }
 })
+
 
 let myFrames = 0
 onUpdate('brick', (b) => {
     myFrames = myFrames + 1
-    if(falling == true && myFrames > 3){
-        downSave()
-        if( ! Number.isInteger(b.ry / RASTER) ){
-            downSave()
-        }
-        myFrames = 0
+    let max_frames
+
+    if(falling){
+        debug.log('presse')
+        max_frames = 5
+
+    }else{
+        max_frames = 180
+    }
+    if(myFrames > max_frames){
+       downSave() 
+       myFrames = 0
     }
 })
 
@@ -431,8 +439,13 @@ onKeyPress('space', () =>{
 })
 
 onKeyDown('down', () =>{
-    downSave()
+    falling = true
 })
+
+onKeyRelease('down', () =>{
+    falling = false
+})
+
 
 onKeyPressRepeat('right', () =>{
     sideSave(1)
