@@ -399,22 +399,44 @@ onTouchEnd((id, pos) =>{
 
 
 // GRAVITY
-let myFrames = 0
+
+// let myFrames = 0
+// onUpdate('brick', (b) => {
+//     myFrames = myFrames + 1
+//     let max_frames
+
+//     if(falling){
+//         max_frames = 5
+
+//     }else{
+//         max_frames = 180
+//     }
+//     if(myFrames > max_frames){
+//        downSave() 
+//        myFrames = 0
+//     }
+// })
+
+let myTime = 0
 onUpdate('brick', (b) => {
-    myFrames = myFrames + 1
-    let max_frames
+    if(g_stop){
+        return
+    }
+    myTime = myTime + dt()
+    let delta
 
     if(falling){
-        max_frames = 5
-
+        delta = 0.3
     }else{
-        max_frames = 180
+        delta = 10
     }
-    if(myFrames > max_frames){
+    if(myTime > delta){
        downSave() 
-       myFrames = 0
+       myTime = 0
     }
 })
+
+
 
 onTouchEnd((id, pos) =>{
     if (downButton.hasPoint(pos)){
