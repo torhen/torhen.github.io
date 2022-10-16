@@ -398,13 +398,13 @@ onTouchEnd((id, pos) =>{
 })
 
 
+// GRAVITY
 let myFrames = 0
 onUpdate('brick', (b) => {
     myFrames = myFrames + 1
     let max_frames
 
     if(falling){
-        debug.log('presse')
         max_frames = 5
 
     }else{
