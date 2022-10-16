@@ -1,3 +1,5 @@
+
+"use strict"
 import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs"
 
 const RASTER = 20
@@ -6,6 +8,7 @@ let g_stop = false
 const wall_color = [150,150,150]
 const bg_color = []
 let falling = false
+let moves = 0
 
 kaboom({
     background : bg_color
@@ -189,6 +192,7 @@ addLevel([
 })
 
 function move_brick(dx, dy){
+    moves = moves + 1
     every('brick', (r) => {
         if(r.isFrozen==false){
             r.rx = r.rx + dx * RASTER
@@ -234,6 +238,7 @@ function isCollidingBrick(){
 }
 
 function rotate90(){
+    moves = moves + 1
     every('brick', (r) => {
         if(r.isFrozen == false){
             rot90(r)
@@ -249,11 +254,9 @@ function freeze(){
 
     // get completed rows
     let complRows = checkRowCompletion()
-    let s = 'Completed rows '
     for(let nRow of complRows){
         deleteRow(nRow)
     }
-
     falling = false
 }
 
@@ -271,10 +274,10 @@ function deleteRow(nRow){
             r.pos.y = r.pos.y + RASTER
         }
     }
-
 }
   
 function newBrick(){
+    moves = 0
     falling = false
     rand_brick(8 * RASTER, 3  * RASTER)
 }
@@ -290,6 +293,7 @@ function rotateSave(){
 
 function downSave(){
     let dy = 0.5
+    moves = moves + 1
     move_brick(0, dy)
     if( isColliding('brick', 'floor')){
         move_brick(0, -dy)
@@ -315,14 +319,6 @@ function sideSave(dx){
         move_brick(-dx, 0)
     }
 }
-
-// loop(0.5, () => {
-//     if(g_stop == false){
-//         downSave()
-//     }
-// })
-
-
 
 function checkRowCompletion(){
     let l = get('brick')
@@ -400,32 +396,15 @@ onTouchEnd((id, pos) =>{
 
 // GRAVITY
 
-// let myFrames = 0
-// onUpdate('brick', (b) => {
-//     myFrames = myFrames + 1
-//     let max_frames
-
-//     if(falling){
-//         max_frames = 5
-
-//     }else{
-//         max_frames = 180
-//     }
-//     if(myFrames > max_frames){
-//        downSave() 
-//        myFrames = 0
-//     }
-// })
-
 let myTime = 0
-onUpdate('brick', (b) => {
+onUpdate('brick', () => {
     if(g_stop){
         return
     }
     myTime = myTime + dt()
     let delta
 
-    if(falling){
+    if(falling && moves > 1){
         delta = 0.3
     }else{
         delta = 10
@@ -435,8 +414,6 @@ onUpdate('brick', (b) => {
        myTime = 0
     }
 })
-
-
 
 onTouchEnd((id, pos) =>{
     if (downButton.hasPoint(pos)){
