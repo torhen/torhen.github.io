@@ -275,6 +275,7 @@ function deleteRow(nRow){
 }
   
 function newBrick(){
+    freeze()
     rand_brick(8 * RASTER, 3  * RASTER)
 }
 
