@@ -405,9 +405,9 @@ onUpdate('brick', () => {
     let delta
 
     if(falling && moves > 1){
-        delta = 0.3
+        delta = 0.5
     }else{
-        delta = 10
+        delta = 20
     }
     if(myTime > delta){
        downSave() 
