@@ -1,16 +1,17 @@
 import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs"
 
-const RASTER = 25
+const RASTER = 20
 const COLUMNS = 9
 let g_stop = false
 const wall_color = [150,150,150]
 const bg_color = []
 let falling = false
-let moves = 0
 
 kaboom({
     background : bg_color
 })
+
+focus()
 
 
 function make_brick(px, py, rx, ry, tag, bcolor){
@@ -274,7 +275,7 @@ function deleteRow(nRow){
 }
   
 function newBrick(){
-    moves = 0
+    falling = false
     rand_brick(8 * RASTER, 3  * RASTER)
 }
 
@@ -289,7 +290,6 @@ function rotateSave(){
 
 function downSave(){
     let dy = 0.5
-    moves = moves + 1
     move_brick(0, dy)
     if( isColliding('brick', 'floor')){
         move_brick(0, -dy)
@@ -316,11 +316,13 @@ function sideSave(dx){
     }
 }
 
-loop(0.5, () => {
-    if(g_stop == false){
-        downSave()
-    }
-})
+// loop(0.5, () => {
+//     if(g_stop == false){
+//         downSave()
+//     }
+// })
+
+
 
 function checkRowCompletion(){
     let l = get('brick')
@@ -385,18 +387,32 @@ onTouchStart((id, pos) =>{
     }
 
     if (downButton.hasPoint(pos)){
-        if(moves > 2){
             falling = true
-        }
     }
 })
 
-let myTime = 0
+onTouchEnd((id, pos) =>{
+    if (downButton.hasPoint(pos)){
+            falling = false
+    }
+})
+
+
+// GRAVITY
+let myFrames = 0
 onUpdate('brick', (b) => {
-    myTime = myTime + dt()
-    if(falling == true && myTime > 0.1){
-        downSave()
-        myTime = 0
+    myFrames = myFrames + 1
+    let max_frames
+
+    if(falling){
+        max_frames = 5
+
+    }else{
+        max_frames = 180
+    }
+    if(myFrames > max_frames){
+       downSave() 
+       myFrames = 0
     }
 })
 
@@ -423,8 +439,13 @@ onKeyPress('space', () =>{
 })
 
 onKeyDown('down', () =>{
-    downSave()
+    falling = true
 })
+
+onKeyRelease('down', () =>{
+    falling = false
+})
+
 
 onKeyPressRepeat('right', () =>{
     sideSave(1)
@@ -439,4 +460,5 @@ add([text('<'), pos(3 * RASTER, 26 * RASTER)])
 add([text('>'), pos(10 * RASTER, 26 * RASTER)])
 add([text('r'), pos(3 * RASTER, 30 * RASTER)])
 add([text('v'), pos(10 * RASTER, 30 * RASTER)])
+
 newBrick()
