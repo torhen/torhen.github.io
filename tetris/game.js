@@ -410,16 +410,19 @@ onUpdate('brick', () => {
     //debug.log(ddt)
     
     let delta
-
+    let fast = false
     if(falling && moves > 1){
         delta = 0
-
+        fast = true
     }else{
         delta = 1000
     }
 
     if(ddt > delta){
-       downSave() 
+       downSave()
+       if(fast){
+        downSave()
+       }
        myTime = getTime()
     }
 })
