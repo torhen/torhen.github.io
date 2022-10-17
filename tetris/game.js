@@ -412,7 +412,7 @@ onUpdate('brick', () => {
     let delta
 
     if(falling && moves > 1){
-        delta = 1
+        delta = 0
 
     }else{
         delta = 1000
