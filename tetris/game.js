@@ -395,23 +395,32 @@ onTouchEnd((id, pos) =>{
 
 
 // GRAVITY
+function getTime(){
+    const d = new Date()
+    return d.getTime()
+}
+let myTime = getTime()
 
-let myTime = 0
 onUpdate('brick', () => {
+
     if(g_stop){
         return
     }
-    myTime = myTime + dt()
+    let ddt = getTime() - myTime
+    //debug.log(ddt)
+    
     let delta
 
     if(falling && moves > 1){
-        delta = 0.5
+        delta = 1
+
     }else{
-        delta = 20
+        delta = 1000
     }
-    if(myTime > delta){
+
+    if(ddt > delta){
        downSave() 
-       myTime = 0
+       myTime = getTime()
     }
 })
 
@@ -460,4 +469,5 @@ add([text('>'), pos(10 * RASTER, 26 * RASTER)])
 add([text('r'), pos(3 * RASTER, 30 * RASTER)])
 add([text('v'), pos(10 * RASTER, 30 * RASTER)])
 
+debug.inspect = false
 newBrick()
