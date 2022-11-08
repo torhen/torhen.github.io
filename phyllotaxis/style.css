@@ -1,0 +1,18 @@
+body{
+    background-color: black;
+}
+#canvas1{
+    background-color: black;
+}
+
+.left{
+    display: flex;
+}
+
+label{
+    color: white;
+}
+
+#myRange{
+    color: red;
+}
