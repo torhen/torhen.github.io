@@ -19,6 +19,7 @@ function test(){
     navigator.geolocation.getCurrentPosition(showPosition);
 }
 
+var g_text
 
 function showPosition(position){
     let lon = position.coords.longitude
@@ -30,8 +31,14 @@ function showPosition(position){
     p_ts.innerHTML = 'timestamp:' + position.timestamp 
 
     const p_coord = document.getElementById('coord')
-    p_coord.innerHTML = 'LV03: ' + swiss[0] + ', ' + swiss[1]
+    g_text = swiss[0] + ', ' + swiss[1]
+    p_coord.innerHTML = "LV03: " + g_text
 
+}
+
+function copy_to_clipboard(){
+    navigator.clipboard.writeText(g_text)
+    alert(g_text + " send to clipboard")
 }
 
 
