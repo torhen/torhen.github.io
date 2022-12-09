@@ -1,5 +1,8 @@
 "use strict"
 
+var g_text
+var g_running = true
+
 function wgs2swiss(lon, lat){
 
 
@@ -19,9 +22,10 @@ function test(){
     navigator.geolocation.getCurrentPosition(showPosition);
 }
 
-var g_text
-
 function showPosition(position){
+    if (g_running == false){
+        return
+    }
     let lon = position.coords.longitude
     let lat = position.coords.latitude
 
@@ -33,12 +37,20 @@ function showPosition(position){
     const p_coord = document.getElementById('coord')
     g_text = swiss[0] + ', ' + swiss[1]
     p_coord.innerHTML = "LV03: " + g_text
-
+    return
 }
 
-function copy_to_clipboard(){
-    navigator.clipboard.writeText(g_text)
-    alert(g_text + " send to clipboard")
+function button_click(){
+    const btn = document.getElementById("btn_stop")
+    if(g_running == true){
+        g_running = false
+        btn.innerHTML = "continue"
+        
+    }else{
+        g_running = true
+        btn.innerHTML = "stop"
+    }
+    
 }
 
 
