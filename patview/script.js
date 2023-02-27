@@ -19,14 +19,18 @@ function draw(ret){
 
     // Horizontal
     ctx.beginPath()
-    let dx = 80
+    let dx = 100
     let dy = 240
-    let r = 7
+    let r = 5
     for(let i = 0; i < 360; i++){
         let angle = i * Math.PI /180
-        let x = (30 - ret.hori[i]) * r * Math.cos(angle) + dx
-        let y = (30 - ret.hori[i]) * r * Math.sin(angle) + dy
-        ctx.lineTo(x, height - y)
+        let r1 = (40 - ret.hori[i]) * r
+        if (r1 <0){
+            r1 = 0
+        }
+        let x = r1 * Math.cos(angle) + dx
+        let y = r1 * Math.sin(angle) + dy
+        ctx.lineTo(x, y)
     }
     ctx.closePath()
     ctx.stroke()
@@ -36,9 +40,13 @@ function draw(ret){
     dx = 400
     for(let i = 0; i < 360; i++){
         let angle = i * Math.PI /180
-        let x = (30 - ret.vert[i]) * r * Math.cos(angle) + dx
-        let y = (30 - ret.vert[i]) * r * Math.sin(angle) + dy
-        ctx.lineTo(x, height - y)
+        let r1 = (40 - ret.vert[i]) * r
+        if (r1 <0){
+            r1 = 0
+        }
+        let x = r1 * Math.cos(angle) + dx
+        let y = r1 * Math.sin(angle) + dy
+        ctx.lineTo(x, y)
     }
     ctx.closePath()
     ctx.stroke()
