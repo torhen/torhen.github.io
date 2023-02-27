@@ -1,0 +1,14 @@
+body {
+    background-color: lightgrey;
+    font-family: consolas;
+}
+
+pre {
+    background-color : black;
+    color: white;
+}
+
+canvas {
+    border: 1px solid;
+    background-color: white;
+}
