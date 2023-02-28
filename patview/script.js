@@ -3,8 +3,8 @@
 window.onload = () =>{
     let canv = document.getElementById('myCanvas')
     let ctx = canv.getContext('2d')
-    canv.width = 640
-    canv.height = 480
+    canv.width = 900
+    canv.height = 600
 
 }
 
@@ -17,21 +17,29 @@ function draw(ret){
     ctx.font = '30px Consolas'
     //ctx.fillText(ret.vert.length, 65, 60)
 
+    let r0 = width * 0.2
+    let dy = height * 0.5
+    let dx = width * 0.25
     // Horizontal
-    drawPattern(ret.hori, ctx, 100, 240, 5)
+    drawPattern(ret.hori, ctx, dx, dy, r0)
+    drawGrid(ctx, dx, dy, r0)
 
     // vertical
-    drawPattern(ret.vert, ctx, 400, 240, 5)
-
+    dx = width * 0.75
+    drawPattern(ret.vert, ctx, dx, dy, r0)
+    drawGrid(ctx, dx, dy, r0)
 
 }
 
-function drawPattern(valueList, ctx, dx, dy, r){
+function drawPattern(valueList, ctx, dx, dy, r0){
+        let min_level = 30
+        ctx.lineWidth = 1
         ctx.beginPath()
         for(let i = 0; i < 360; i++){
             let angle = i * Math.PI /180
-            let r1 = (40 - valueList[i]) * r
-            if (r1 <0){
+
+            let r1 = r0 - valueList[i] * r0 / min_level
+            if(r1 <0){
                 r1 = 0
             }
             let x = r1 * Math.cos(angle) + dx
@@ -40,6 +48,32 @@ function drawPattern(valueList, ctx, dx, dy, r){
         }
         ctx.closePath()
         ctx.stroke()
+}
+
+function drawGrid(ctx, dx, dy, r0){
+    ctx.lineWidth = 0.3
+
+    // horizontal line
+    ctx.beginPath()
+    ctx.moveTo(dx - r0, dy)
+    ctx.lineTo(dx + r0, dy)
+    ctx.stroke()
+
+    // vertical line
+    ctx.beginPath()
+    ctx.moveTo(dx, dy - r0)
+    ctx.lineTo(dx, dy + r0)
+    ctx.stroke()
+
+    // circle 0, 3, 10, 20 dB
+    let ticks = [1, 9/10, 2/3, 1/3]
+    for(let i=0; i< ticks.length; i++){
+        let tick = ticks[i]
+        ctx.beginPath()
+        ctx.arc(dx, dy, r0 * tick, 0, 2 * Math.PI)
+        ctx.stroke()
+
+    }
 }
 
 function print(s){
