@@ -18,39 +18,28 @@ function draw(ret){
     //ctx.fillText(ret.vert.length, 65, 60)
 
     // Horizontal
-    ctx.beginPath()
-    let dx = 100
-    let dy = 240
-    let r = 5
-    for(let i = 0; i < 360; i++){
-        let angle = i * Math.PI /180
-        let r1 = (40 - ret.hori[i]) * r
-        if (r1 <0){
-            r1 = 0
-        }
-        let x = r1 * Math.cos(angle) + dx
-        let y = r1 * Math.sin(angle) + dy
-        ctx.lineTo(x, y)
-    }
-    ctx.closePath()
-    ctx.stroke()
+    drawPattern(ret.hori, ctx, 100, 240, 5)
 
-    // Vertical
-    ctx.beginPath()
-    dx = 400
-    for(let i = 0; i < 360; i++){
-        let angle = i * Math.PI /180
-        let r1 = (40 - ret.vert[i]) * r
-        if (r1 <0){
-            r1 = 0
-        }
-        let x = r1 * Math.cos(angle) + dx
-        let y = r1 * Math.sin(angle) + dy
-        ctx.lineTo(x, y)
-    }
-    ctx.closePath()
-    ctx.stroke()
+    // vertical
+    drawPattern(ret.vert, ctx, 400, 240, 5)
 
+
+}
+
+function drawPattern(valueList, ctx, dx, dy, r){
+        ctx.beginPath()
+        for(let i = 0; i < 360; i++){
+            let angle = i * Math.PI /180
+            let r1 = (40 - valueList[i]) * r
+            if (r1 <0){
+                r1 = 0
+            }
+            let x = r1 * Math.cos(angle) + dx
+            let y = r1 * Math.sin(angle) + dy
+            ctx.lineTo(x, y)
+        }
+        ctx.closePath()
+        ctx.stroke()
 }
 
 function print(s){
