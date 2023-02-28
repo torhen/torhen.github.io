@@ -66,19 +66,17 @@ function drawPattern(valueList, ctx, dx, dy, r0){
 function drawGrid(ctx, dx, dy, r0){
     ctx.lineWidth = 0.3
 
-    // horizontal line
-    ctx.beginPath()
-    ctx.moveTo(dx - r0, dy)
-    ctx.lineTo(dx + r0, dy)
-    ctx.stroke()
-
-    // vertical line
-    ctx.beginPath()
-    ctx.moveTo(dx, dy - r0)
-    ctx.lineTo(dx, dy + r0)
-    ctx.stroke()
-
-    // circle 0, 3, 10, 20 dB
+    // lines
+    let grds = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330]
+    for(let i=0; i < grds.length; i++){
+        let rad = grds[i] * Math.PI / 180
+        ctx.beginPath()
+        ctx.moveTo(dx, dy)
+        ctx.lineTo(dx + r0 * Math.cos(rad), dy + r0 * Math.sin(rad))
+        ctx.stroke()
+    }
+    
+    // circles
     let ticks = [1, 9/10, 2/3, 1/3]
     for(let i=0; i< ticks.length; i++){
         let tick = ticks[i]
