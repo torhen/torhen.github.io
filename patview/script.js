@@ -1,7 +1,7 @@
 "use strict"
 
 const g_antennas = []
-const g_colors = ['black', 'red', 'blue', 'yellow', 'orange']
+const g_colors = ['black', 'red', 'blue', 'crimson', 'orange', 'forestgreen', 'cyan', 'teal', 'navy', 'magenta']
 
 window.onload = () =>{
     let canv = document.getElementById('myCanvas')
@@ -29,7 +29,7 @@ function draw(){
     ctx.font = '30px Consolas'
     //ctx.fillText(ret.vert.length, 65, 60)
 
-    let r0 = width * 0.2
+    let r0 = width * 0.23
     let dy = height * 0.5
     let dx1 = width * 0.25
     let dx2 = width * 0.75
@@ -46,7 +46,7 @@ function draw(){
     for(let i=0; i < g_antennas.length; i++){
         let ret = g_antennas[i]
 
-        let color = g_colors[i]
+        let color = g_colors[i % 10]
 
         if(ret.visible == 1){
             // Horizontal
@@ -57,8 +57,6 @@ function draw(){
         }
 
 
-        //out.innerHTML = out.innerHTML  + '<p style="color:' + color + '">' + ret.filename + '</p>'
-
  
         // create checkbox
         let checkbox = document.createElement('input');
@@ -67,8 +65,6 @@ function draw(){
 
         // check if antenna is visible
         checkbox.checked = g_antennas[i].visible
-        // checkbox.name = 'interest';
-        // checkbox.value = ret.filename
      
         // create label
         let label = document.createElement('label')
@@ -219,18 +215,26 @@ function processText(s){
 
 
 function handleFileInput(e){
-    let file = e.target.files[0]
+    let files = e.target.files
+    let msg = document.getElementById('msg')
 
-    let reader = new FileReader()
-    reader.readAsText(file)
 
-    reader.onload = () =>{
-        let ret = processText(reader.result)
-        ret.filename = file.name
-        ret.visible = 1
-        g_antennas.push(ret)
-        draw()
+    for(let i = 0; i < files.length; i++){
+        
+        let file = files[i]
+        let reader = new FileReader()
+        reader.readAsText(file)
+    
+        reader.onload = () =>{
+            let ret = processText(reader.result)
+            ret.filename = file.name
+            ret.visible = 1
+            g_antennas.push(ret)
+            draw()
+            msg.innerHTML = 'loading ' + (i + 1) + '/' + files.length
+        }
     }
+    
 }
 
 document.getElementById('myFile').addEventListener("change", handleFileInput)
