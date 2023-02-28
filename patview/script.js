@@ -1,7 +1,9 @@
 "use strict"
 
 const g_antennas = []
-const g_colors = ['black', 'red', 'blue', 'crimson', 'orange', 'forestgreen', 'cyan', 'teal', 'navy', 'magenta']
+const g_colors = ["Black", "red", "orange", "blue", "cyan", "magenta", "darkgrey", "teal", "Purple", "olive"]
+
+
 
 window.onload = () =>{
     let canv = document.getElementById('myCanvas')
@@ -46,7 +48,7 @@ function draw(){
     for(let i=0; i < g_antennas.length; i++){
         let ret = g_antennas[i]
 
-        let color = g_colors[i % 10]
+        let color = g_colors[i % g_colors.length]
 
         if(ret.visible == 1){
             // Horizontal
