@@ -1,5 +1,8 @@
 "use strict"
 
+const g_antennas = []
+const g_colors = ['black', 'red', 'blue', 'yellow', 'orange']
+
 window.onload = () =>{
     let canv = document.getElementById('myCanvas')
     let ctx = canv.getContext('2d')
@@ -8,15 +11,11 @@ window.onload = () =>{
     canv.height = 600
 
     // show empty grid
-    draw({
-        head : '',
-        hori: [],
-        vert: []
-    })
+    draw()
 
 }
 
-function draw(ret){
+function draw(){
     const canv = document.getElementById('myCanvas')
     let width = canv.width
     let height = canv.height
@@ -32,21 +31,83 @@ function draw(ret){
 
     let r0 = width * 0.2
     let dy = height * 0.5
-    let dx = width * 0.25
-    // Horizontal
-    drawPattern(ret.hori, ctx, dx, dy, r0)
-    drawGrid(ctx, dx, dy, r0)
+    let dx1 = width * 0.25
+    let dx2 = width * 0.75
 
-    // vertical
-    dx = width * 0.75
-    drawPattern(ret.vert, ctx, dx, dy, r0)
-    drawGrid(ctx, dx, dy, r0)
+    drawGrid(ctx, dx1, dy, r0)
+
+    drawGrid(ctx, dx2, dy, r0)
+
+    let out = document.getElementById('output')
+    out.innerHTML = '<br>'
+
+
+    // draw antennas
+    for(let i=0; i < g_antennas.length; i++){
+        let ret = g_antennas[i]
+
+        let color = g_colors[i]
+
+        if(ret.visible == 1){
+            // Horizontal
+            drawPattern(ret.hori, ctx, dx1, dy, r0, color)
+
+            // vertical
+            drawPattern(ret.vert, ctx, dx2, dy, r0, color)
+        }
+
+
+        //out.innerHTML = out.innerHTML  + '<p style="color:' + color + '">' + ret.filename + '</p>'
+
+ 
+        // create checkbox
+        let checkbox = document.createElement('input');
+        checkbox.type = 'checkbox'
+        checkbox.id = i
+
+        // check if antenna is visible
+        checkbox.checked = g_antennas[i].visible
+        // checkbox.name = 'interest';
+        // checkbox.value = ret.filename
+     
+        // create label
+        let label = document.createElement('label')
+        label.htmlFor = ret.filename;
+        label.style.color = color
+        label.appendChild(document.createTextNode(ret.filename))
+     
+        // create linebreak
+        let br = document.createElement('br')
+     
+        // add to out
+        out.appendChild(checkbox);
+        out.appendChild(label)
+        out.appendChild(br)
+
+        checkbox.addEventListener('change', handleCheck)
+       
+    }
+}
+
+function handleCheck(e){
+    let n = e.target.id
+    let ant = g_antennas[n]
+
+    if(ant.visible == 0){
+        ant.visible = 1
+    }else{
+        ant.visible = 0
+    }
+
+    draw()
+
 
 }
 
-function drawPattern(valueList, ctx, dx, dy, r0){
+function drawPattern(valueList, ctx, dx, dy, r0, color){
         let min_level = 30
         ctx.lineWidth = 1
+        ctx.strokeStyle = color
         ctx.beginPath()
         for(let i = 0; i < 360; i++){
             let angle = i * Math.PI /180
@@ -65,6 +126,7 @@ function drawPattern(valueList, ctx, dx, dy, r0){
 
 function drawGrid(ctx, dx, dy, r0){
     ctx.lineWidth = 0.3
+    ctx.strokeStyle = 'black'
 
     // lines
     let grds = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330]
@@ -88,9 +150,9 @@ function drawGrid(ctx, dx, dy, r0){
 }
 
 function print(s){
-    let out = document.getElementById('output')
-    out.style.fontSize = '14px'
-    out.innerHTML = s
+    // let out = document.getElementById('output')
+    // out.style.fontSize = '14px'
+    // out.innerHTML = s
 }
 
 function processText(s){
@@ -164,8 +226,10 @@ function handleFileInput(e){
 
     reader.onload = () =>{
         let ret = processText(reader.result)
-        print(ret.head)
-        draw(ret)
+        ret.filename = file.name
+        ret.visible = 1
+        g_antennas.push(ret)
+        draw()
     }
 }
 
