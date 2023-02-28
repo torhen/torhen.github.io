@@ -3,8 +3,16 @@
 window.onload = () =>{
     let canv = document.getElementById('myCanvas')
     let ctx = canv.getContext('2d')
+
     canv.width = 900
     canv.height = 600
+
+    // show empty grid
+    draw({
+        head : '',
+        hori: [],
+        vert: []
+    })
 
 }
 
@@ -13,6 +21,11 @@ function draw(ret){
     let width = canv.width
     let height = canv.height
     let ctx = canv.getContext('2d')
+
+    // clear canvas
+    ctx.fillStyle = "white"
+    ctx.fillRect(0, 0, width, height)
+
 
     ctx.font = '30px Consolas'
     //ctx.fillText(ret.vert.length, 65, 60)
