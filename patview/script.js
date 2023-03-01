@@ -1,8 +1,7 @@
 "use strict"
 
 const g_antennas = []
-const g_colors = ["Black", "red", "blue", "cyan", "magenta",, "orange", "darkgrey", "teal", "Purple", "olive"]
-
+const g_colors = ["black", "red", "blue", "green", "purple", "#0aa", "magenta", "brown", "orange", "olive"]
 
 
 window.onload = () =>{
@@ -73,6 +72,7 @@ function draw(){
         label.htmlFor = ret.filename;
         label.style.color = color
         label.appendChild(document.createTextNode(ret.filename))
+        label.title = ret.head
      
         // create linebreak
         let br = document.createElement('br')
