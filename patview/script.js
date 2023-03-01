@@ -1,7 +1,7 @@
 "use strict"
 
 const g_antennas = []
-const g_colors = ["Black", "red", "orange", "blue", "cyan", "magenta", "darkgrey", "teal", "Purple", "olive"]
+const g_colors = ["Black", "red", "blue", "cyan", "magenta",, "orange", "darkgrey", "teal", "Purple", "olive"]
 
 
 
