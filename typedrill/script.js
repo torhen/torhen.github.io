@@ -21,6 +21,7 @@ class CText {
     setText(text) {
         this.rawText = text
         this.rawText = this.rawText.replace(/\n+/g, '¶')
+        this.rawText = this.rawText.replace(/\s¶/g, '¶')
         this.rawText = this.rawText.replace(/\s+/g, ' ')
         this.rawText = this.rawText.replace(/[„“]/g, '"')
         this.rawText = this.rawText.replace(/ß/g, 'ss')
@@ -198,10 +199,10 @@ class CText {
         for(let i=0; i < maxLen; i++){
             let c = s.substr(i, 1)
             if (c == '¶'){
-                return i+1
+                return i + 1
             }
             if(c == ' '){
-                res = i
+                res = i + 1
             }
         }
         return res
