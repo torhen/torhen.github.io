@@ -25,6 +25,8 @@ class CText {
         this.rawText = this.rawText.replace(/\s+/g, ' ')
         this.rawText = this.rawText.replace(/[„“]/g, '"')
         this.rawText = this.rawText.replace(/ß/g, 'ss')
+        this.rawText = this.rawText.replace(/–/g, '-')
+
         this.cursor_pos = 0
         g_text.convertToLines()
         g_text.draw()
