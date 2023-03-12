@@ -184,7 +184,7 @@ class CText {
         while(true){
             let breakPos = this.getBreakPos(s, maxLength)
             let scheibe = s.substr(0, breakPos)
-            res.push(scheibe)
+            res.push(scheibe.trim())
             s = s.substr(breakPos).trim()
             if(s.length == 0){
                 break
