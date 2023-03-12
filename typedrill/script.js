@@ -10,15 +10,20 @@ class CText {
         this.lineHeight = 40
         this.rawText = ''
         this.lines = []
-        this.maxLettersPerLine = 30
+        this.maxLettersPerLine = 35
         this.lineStart = 20
         this.cursor_pos = 0
         this.cursor_color = 'green'
         this.state = 'ok'
+        this.maxLines = 14
     }
 
     setText(text) {
         this.rawText = text
+        this.rawText = this.rawText.replace(/\n+/g, '¶')
+        this.rawText = this.rawText.replace(/\s+/g, ' ')
+        this.rawText = this.rawText.replace(/[„“]/g, '"')
+        this.rawText = this.rawText.replace(/ß/g, 'ss')
         this.cursor_pos = 0
         g_text.convertToLines()
         g_text.draw()
@@ -51,6 +56,8 @@ class CText {
         this.cursor_pos = this.cursor_pos + 1
     }
 
+
+
     draw(){
         // clear
         this.ctx.fillStyle = 'white'
@@ -69,7 +76,12 @@ class CText {
         if(startLine < 0){
             startLine = 0
         }
-        for(let line = startLine; line < this.lines.length; line++){
+
+        let readTill = startLine + this.maxLines
+        if(readTill >= this.lines.length){
+            readTill = this.lines.length -1
+        }
+        for(let line = startLine; line < readTill; line++){
             this.ctx.fillText(this.lines[line], this.lineStart, y)
 
             // draw only if line of cursor
@@ -85,10 +97,37 @@ class CText {
     }
 
     handle_key(s){
+        console.log(s)
         // keys to ignore
         if(s == 'Shift'){
             return
         }
+
+        if(s.substr(0, 5) == 'AltGr'){
+            return
+        }
+
+        if(s.substr(0, 5) == 'Contr'){
+            return
+        }
+
+        // next line
+        if(s == 'Enter'){
+            s = '¶'
+        }
+
+        // down
+        if(s == 'ArrowDown'){
+
+            for(let i=0; i<=this.maxLettersPerLine; i++){
+                this.cursorRight()
+            }
+            
+            this.cursor_color = 'green'
+            this.draw()
+            return
+        }
+
 
         // arrow right for not possible letters
         if(s == 'ArrowRight'){
@@ -101,7 +140,6 @@ class CText {
 
         // free from wrong state
         if(s == 'Backspace'){
-            console.log('free')
             this.cursor_color = 'green'
             this.state = 'ok'
             this.draw()
@@ -112,7 +150,7 @@ class CText {
         let cursor_y = pos[0]
         let cursor_x = pos[1]
 
-        console.log(s)
+
 
         let under_cursor = this.lines[cursor_y][cursor_x]
 
@@ -133,19 +171,41 @@ class CText {
 
 
     convertToLines(){
-        let i = 0
-        this.lines = []
+
+        this.lines = this.breakIt(this.rawText, this.maxLettersPerLine)
+    } 
+
+
+    breakIt(s, maxLength){
+
+        let res = []
+    
         while(true){
-            let start = i
-            let end = i + this.maxLettersPerLine
-            let s = this.rawText.substring(start, end)
-            this.lines.push(s)
-            i = i + this.maxLettersPerLine
-            if(i >= this.rawText.length){
+            let breakPos = this.getBreakPos(s, maxLength)
+            let scheibe = s.substr(0, breakPos)
+            res.push(scheibe)
+            s = s.substr(breakPos).trim()
+            if(s.length == 0){
                 break
             }
         }
-    } 
+        return  res
+    }
+
+
+   getBreakPos(s, maxLen){
+        let res =  maxLen
+        for(let i=0; i < maxLen; i++){
+            let c = s.substr(i, 1)
+            if (c == '¶'){
+                return i+1
+            }
+            if(c == ' '){
+                res = i
+            }
+        }
+        return res
+    }
 }
 
 window.onload = () => {
@@ -165,7 +225,7 @@ document.getElementById('canvas1').addEventListener('keydown', (event) => {
   }, false);
 
 
-console.log(document.getElementById('file1').addEventListener('change', (e) => {
+document.getElementById('file1').addEventListener('change', (e) => {
     let file = e.target.files[0]
     let reader = new FileReader()
     reader.readAsText(file)
@@ -174,4 +234,4 @@ console.log(document.getElementById('file1').addEventListener('change', (e) => {
         g_text.setText(text)
     }
 
-}))
+})
