@@ -105,7 +105,11 @@ class CText {
         if(s == 'Shift'){
             return
         }
-
+        
+        if(s == 'Dead'){
+            return
+        }
+     
         if(s.substr(0, 5) == 'AltGr'){
             return
         }
