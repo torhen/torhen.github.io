@@ -16,7 +16,7 @@ var schedule_text = `
 15;  Noch 15 Sekunden
 15;  Linkes Bein nach hinten
 15;  Noch 15 Sekunden
-15;  Reches Bein Spinne
+15;  Rechtes Bein Spinne
 15;  Noch 15 Sekunden
 15;  Linkes Bein Spinne
 15;  Noch 15 Sekunden
