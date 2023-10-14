@@ -1,4 +1,7 @@
 #canvas1{
+    postition: absolute;
+    top: 0;
+    left: 0;
     border:dashed;
     background-color:#000040;
   }
