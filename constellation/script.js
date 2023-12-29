@@ -121,8 +121,8 @@ function animate(){
 
 
     ctx.font = "15px Arial";
-    let text = `speed=${g_speed}  min.distance=${g_minConnectionDist}  particles=${plist.length} connections=${g_connections} `
-    ctx.fillText(text, 0, 15);
+    let text = `    speed=${g_speed}  min.distance=${g_minConnectionDist}  particles=${plist.length} connections=${g_connections} `
+    document.getElementById('comment').innerText = text
     window.requestAnimationFrame(animate)
 }
 
