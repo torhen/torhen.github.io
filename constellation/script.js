@@ -10,7 +10,8 @@ const WIDTH = window.innerWidth
 const HEIGHT = window.innerHeight
 let g_speed = 5
 const PARTICLES = 100
-let MAX_DIST = 100
+let g_minConnectionDist = 100
+let g_connections
 
 canvas.width= WIDTH
 canvas.height = HEIGHT
@@ -25,7 +26,7 @@ slider1.addEventListener('change', (e)=>{
 
 const slider2 = document.getElementById('slider2')
 slider2.addEventListener('change', (e)=>{
-    MAX_DIST = slider2.value
+    g_minConnectionDist = slider2.value
 })
 
 const slider3 = document.getElementById('slider3')
@@ -94,13 +95,15 @@ function animate(){
         plist[i].draw()
      }
 
+     // make connections
+     let connections = 0
      for(let i=0; i < plist.length; i++){
         for(let j=0; j < plist.length; j++){
             let p0 = plist[i]
             let p1 = plist[j]
               let d = Math.sqrt((p0.x - p1.x)**2 + (p0.y - p1.y)**2)
 
-            if(d < MAX_DIST && d > 0){
+            if(d < g_minConnectionDist && d > 0){
                 ctx.lineWidth = 0.5
                 ctx.strokeStyle = 'white'
                 ctx.line
@@ -109,11 +112,18 @@ function animate(){
                 ctx.lineTo(p1.x, p1.y)
 
                 ctx.stroke()
+                connections++
             }
 
         }
+        g_connections = connections
      }
-     window.requestAnimationFrame(animate)
+
+
+    ctx.font = "15px Arial";
+    let text = `speed=${g_speed}  min.distance=${g_minConnectionDist}  particles=${plist.length} connections=${g_connections} `
+    ctx.fillText(text, 0, 15);
+    window.requestAnimationFrame(animate)
 }
 
 
