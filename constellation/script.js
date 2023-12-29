@@ -4,14 +4,43 @@ const canvas = document.getElementById('canvas1')
 const ctx = canvas.getContext('2d')
 window.addEventListener('load', init)
 
+
+
 const WIDTH = window.innerWidth
 const HEIGHT = window.innerHeight
-const SPEED = 5
+let g_speed = 5
 const PARTICLES = 100
-const MAX_DIST = 100
+let MAX_DIST = 100
 
 canvas.width= WIDTH
 canvas.height = HEIGHT
+
+let plist = []
+
+const slider1 = document.getElementById('slider1')
+slider1.addEventListener('change', (e)=>{
+    g_speed = slider1.value
+})
+
+
+const slider2 = document.getElementById('slider2')
+slider2.addEventListener('change', (e)=>{
+    MAX_DIST = slider2.value
+})
+
+const slider3 = document.getElementById('slider3')
+slider3.addEventListener('change', (e)=>{
+    let particles = slider3.value
+    plist = []
+    for(let i=0; i<particles; i++){
+        let x = Math.random() * WIDTH
+        let y = Math.random() * HEIGHT
+        let dx = Math.random() - 0.5
+        let dy = Math.random() - 0.5
+        let p = new Particle(x, y, 5, dx, dy, 'white')
+        plist.push(p)
+    }
+})
 
 
 class Particle{
@@ -33,8 +62,8 @@ class Particle{
     }
 
     update(){
-        this.x += this.dx
-        this.y += this.dy
+        this.x += g_speed *this.dx
+        this.y += g_speed * this.dy
         if(this.x < 0 || this.x > WIDTH){
             this.dx *= -1
         }
@@ -44,14 +73,14 @@ class Particle{
     }
 }
 
-const plist = []
+
 
 function init(){
     for(let i=0; i<PARTICLES; i++){
         let x = Math.random() * WIDTH
         let y = Math.random() * HEIGHT
-        let dx = SPEED * (Math.random() - 0.5)
-        let dy = SPEED * (Math.random() - 0.5)
+        let dx = Math.random() - 0.5
+        let dy = Math.random() - 0.5
         let p = new Particle(x, y, 5, dx, dy, 'white')
         plist.push(p)
      }

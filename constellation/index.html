@@ -4,10 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>test</title>
+    <title>Constellation</title>
 </head>
 <body>
+
+    <label for="speed">speed:</label>
+    <input type="range" min="0" max="50" step='1' value="5"  id="slider1" name="speed">
+
+    <label for="distance">distance:</label>
+    <input type="range" min="0" max="1000" step='10' value="100"  id="slider2" name="distance">
+
+    <label for="particle">particles:</label>
+    <input type="range" min="0" max="1000" step='20' value="100"  id="slider3" name="particles">
+
+
     <canvas id="canvas1"></canvas>
+
     <script src="script.js"></script>
 </body>
 </html>
