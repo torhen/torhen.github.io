@@ -27,11 +27,14 @@ slider1.addEventListener('change', (e)=>{
 const slider2 = document.getElementById('slider2')
 slider2.addEventListener('change', (e)=>{
     g_minConnectionDist = slider2.value
+    if(slider2.value == slider2.max){
+        g_minConnectionDist = 1000000
+    }
 })
 
 const slider3 = document.getElementById('slider3')
 slider3.addEventListener('change', (e)=>{
-    let particles = slider3.value
+    let particles = 2 ** slider3.value
     plist = []
     for(let i=0; i<particles; i++){
         let x = Math.random() * WIDTH
