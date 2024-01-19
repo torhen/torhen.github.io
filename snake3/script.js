@@ -24,7 +24,7 @@ class App{
         this.is_pause = false
 
         // snake color
-        this.color_head = 'li ghtgreen'
+        this.color_head = 'lightgreen'
         this.color_body = ' green'
 
         //apple color
