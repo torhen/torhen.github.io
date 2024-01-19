@@ -26,8 +26,8 @@ class App{
         this.background_color = 'lightgrey'
 
         // snake color
-        this.color_head = 'lightgreen'
-        this.color_body = 'darkgreen'
+        this.color_head = 'rgba(0,250,0,0.7)'
+        this.color_body = 'rgba(0,150,0,0.7)'
  
         //apple color
         this.color_apple = 'red'
@@ -164,7 +164,6 @@ class Square{
         y = y + d
         w = w - 2 * d
         h = h - 2 * d
-
 
 
         // app.ctx.strokeRect(x, y, w, h)
