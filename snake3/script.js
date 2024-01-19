@@ -159,14 +159,15 @@ class Square{
         let w = app.tile_width
         let h = app.tile_height
 
-        if( (this.pos_x + this.pos_y) % 2 == 0){
+        let d = app.tile_width * 0
+        x = x + d
+        y = y + d
+        w = w - 2 * d
+        h = h - 2 * d
 
-            app.ctx.strokeStyle = app.tile_fill_color1
-        }else{
-            app.ctx.strokeStyle = app.tile_fill_color2
 
-        }
-        app.ctx.strokeRect(x, y, w, h)
+
+        // app.ctx.strokeRect(x, y, w, h)
         app.ctx.fillRect(x ,y ,w, h)
 
     }
