@@ -23,16 +23,19 @@ class App{
         this.points = 3
         this.is_pause = false
 
+        this.background_color = 'lightgrey'
+
         // snake color
         this.color_head = 'lightgreen'
-        this.color_body = ' green'
-
+        this.color_body = 'darkgreen'
+ 
         //apple color
         this.color_apple = 'red'
-        this.color_font = 'red'
-
+        this.color_font = 'darkgreen'
+ 
         this.tile_stroke_color = 'lightgrey'
-        this.tile_fill_color = 'black'
+        this.tile_fill_color1 = 'black'
+        this.tile_fill_color2 = '#222 '
 
 
         this.background = new Background()
@@ -102,15 +105,23 @@ class Background{
     }
  
     draw(){
-        app.ctx.clearRect(0, 0, app.canvas.width, app.canvas.height)
+        app.ctx.fillStyle = app.background_color
+        app.ctx.fillRect(0, 0, app.canvas.width, app.canvas.height)
         for(let j=0; j< app.tiles_y; j++){
             for(let i=0; i < app.tiles_x; i++){ 
                 let x = app.x_left + i * app.tile_width 
                 let y = app.y_up + j * app.tile_height
+
+                if( (i + j) % 2 === 0){
+
+                    app.ctx.fillStyle = app.tile_fill_color1
+
+                }else{
+                    app.ctx.fillStyle = app.tile_fill_color2
+                }
                 app.ctx.strokeStyle = app.tile_stroke_color
-                app.ctx.fillStyle = app.tile_fill_color
                 app.ctx.fillRect(x,y,app.tile_width, app.tile_height)
-                app.ctx.strokeRect(x,y,app.tile_width, app.tile_height)
+                //app.ctx.strokeRect(x,y,app.tile_width, app.tile_height)
             }
         }
  
@@ -123,9 +134,16 @@ class Background{
 
         // pause indicator
         if(app.is_pause){
-            app.ctx.fillText('pause', text_x, text_y + app.tile_height)
+            if(Math.floor(app.frame_count / 20) % 2 == 0){
+                app.ctx.fillStyle = app.color_font
+                app.ctx.fillText("Pause", text_x, text_y + app.tile_height)
+            }else{
+                app.ctx.fillText("      " , text_x, text_y + app.tile_height)
+
+            }
         }
-    }
+          
+    } 
 }
 
 class Square{
@@ -140,6 +158,14 @@ class Square{
         let y = app.y_up + this.pos_y * app.tile_height
         let w = app.tile_width
         let h = app.tile_height
+
+        if( (this.pos_x + this.pos_y) % 2 == 0){
+
+            app.ctx.strokeStyle = app.tile_fill_color1
+        }else{
+            app.ctx.strokeStyle = app.tile_fill_color2
+
+        }
         app.ctx.strokeRect(x, y, w, h)
         app.ctx.fillRect(x ,y ,w, h)
 
