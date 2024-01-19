@@ -135,9 +135,13 @@ class Square{
     }
 
     draw(){
+
         let x = app.x_left + this.pos_x * app.tile_width
         let y = app.y_up + this.pos_y * app.tile_height
-        app.ctx.fillRect(x , y,app.tile_width,app.tile_height)
+        let w = app.tile_width
+        let h = app.tile_height
+        app.ctx.strokeRect(x, y, w, h)
+        app.ctx.fillRect(x ,y ,w, h)
 
     }
 
@@ -163,15 +167,13 @@ class Snake{
     }
 
     check_in_snake1(x, y){
-        for(let i = 1; i< this.squares.length; i++){
+        for(let i = 2; i< this.squares.length; i++){
             if( x === this.squares[i].pos_x & y === this.squares[i].pos_y){
                 return true
             }
         }
         return false
     }
-
-
 
     update(){
         if(app.frame_count < app.wait_frames){
@@ -231,8 +233,10 @@ class Snake{
     draw(){
         for(let i = 0; i < this.squares.length; i++){
             if(i == 0){
+                app.ctx.strokeStyle = app.tile_stroke_color
                 app.ctx.fillStyle=app.color_head
             }else{
+                app.ctx.strokeStyle = app.tile_stroke_color
                 app.ctx.fillStyle=app.color_body
             }
             this.squares[i].draw()
@@ -250,6 +254,13 @@ class Apple{
         let x = app.x_left + this.pos_x * app.tile_width + app.tile_width / 2
         let y = app.y_up + this.pos_y * app.tile_height + app.tile_height / 2
         let r = app.tile_width / 2
+
+
+        let d = app.tile_width * 0.03
+        x = x + d
+        y = y + d
+        r = r - 4 * d
+
         app.ctx.beginPath()
         app.ctx.fillStyle = app.color_apple
         app.ctx.arc(x,y,r,0, 2*Math.PI,false)
