@@ -21,11 +21,20 @@ class App{
         this.dir_x = 1
         this.dir_y = 0
         this.points = 3
+        this.is_pause = false
 
-        this.color_head = 'green'
-        this.color_body = 'lightgreen'
+        // snake color
+        this.color_head = 'li ghtgreen'
+        this.color_body = ' green'
+
+        //apple color
         this.color_apple = 'red'
         this.color_font = 'red'
+
+        this.tile_stroke_color = 'lightgrey'
+        this.tile_fill_color = 'black'
+
+
         this.background = new Background()
         this.snake = new Snake()
         this.apple = new Apple()
@@ -33,7 +42,10 @@ class App{
 
     update(){
         this.frame_count += 1
-        this.snake.update()
+
+        if(this.is_pause == false){
+            this.snake.update()
+        }
 
     }
 
@@ -73,30 +85,46 @@ class App{
             return
         }
         this.dir_x = 0
-        this.dir_y = 1
+        this.dir_y = 1  
+    } 
+
+    toggle_pause(){
+        if(this.is_pause == false){
+            this.is_pause = true
+        }else{
+            this.is_pause = false
+        }
     }
 }
 
 class Background{
     constructor(){
     }
-
+ 
     draw(){
+        app.ctx.clearRect(0, 0, app.canvas.width, app.canvas.height)
         for(let j=0; j< app.tiles_y; j++){
-            for(let i=0; i < app.tiles_x; i++){
-                let x = app.x_left + i * app.tile_width
+            for(let i=0; i < app.tiles_x; i++){ 
+                let x = app.x_left + i * app.tile_width 
                 let y = app.y_up + j * app.tile_height
-                app.ctx.strokeStyle = 'lightgrey'
+                app.ctx.strokeStyle = app.tile_stroke_color
+                app.ctx.fillStyle = app.tile_fill_color
+                app.ctx.fillRect(x,y,app.tile_width, app.tile_height)
                 app.ctx.strokeRect(x,y,app.tile_width, app.tile_height)
             }
         }
-
+ 
         // draw points
         let text_x = app.x_left + app.tile_width * (app.tiles_x + 2)
         let text_y = app.y_up + app.tile_height
         app.ctx.fillStyle = app.color_font
         app.ctx.font = app.tile_height + "px Consolas"
-        app.ctx.fillText(app.points, text_x, text_y)
+        app.ctx.fillText(app.points, text_x, text_y) 
+
+        // pause indicator
+        if(app.is_pause){
+            app.ctx.fillText('pause', text_x, text_y + app.tile_height)
+        }
     }
 }
 
@@ -127,6 +155,15 @@ class Snake{
 
     check_in_snake(x, y){
         for(let i = 0; i< this.squares.length; i++){
+            if( x === this.squares[i].pos_x & y === this.squares[i].pos_y){
+                return true
+            }
+        }
+        return false
+    }
+
+    check_in_snake1(x, y){
+        for(let i = 1; i< this.squares.length; i++){
             if( x === this.squares[i].pos_x & y === this.squares[i].pos_y){
                 return true
             }
@@ -179,7 +216,7 @@ class Snake{
         }
 
         // Check self touching
-        if(app.snake.check_in_snake(x_head_new, y_head_new)){
+        if(app.snake.check_in_snake1(x_head_new, y_head_new)){
             window.alert('Game Over')
             app.init()
             return
@@ -218,7 +255,6 @@ class Apple{
         app.ctx.arc(x,y,r,0, 2*Math.PI,false)
         app.ctx.fill()
         app.ctx.closePath()
-
     }
 
     move_apple(){
@@ -248,11 +284,12 @@ window.addEventListener('load', ()=>{
     app.init()
 
     window.addEventListener("keydown", (e)=>{
+
         if (e.key == 'ArrowRight'){
             app.key_right()
         }
         if (e.key == 'ArrowLeft'){
-            app.key_left()
+            app.key_left()  
         }
         if (e.key == 'ArrowDown'){
             app.key_down()
@@ -260,10 +297,13 @@ window.addEventListener('load', ()=>{
         if (e.key == 'ArrowUp'){
             app.key_up()
         }
+        if (e.key == ' '){
+            app.toggle_pause()
+        }
     })
 
     function animate(){
-        app.ctx.clearRect(0, 0, app.canvas.width, app.canvas.height)
+        //console.log(app.is_pause)
         app.update()
         app.draw()
         requestAnimationFrame(animate)
