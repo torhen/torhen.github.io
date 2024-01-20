@@ -193,7 +193,7 @@ class Snake{
     }
 
     check_in_snake1(x, y){
-        for(let i = 2; i< this.squares.length; i++){
+        for(let i = 3; i< this.squares.length; i++){
             if( x === this.squares[i].pos_x & y === this.squares[i].pos_y){
                 return true
             }
