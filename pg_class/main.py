@@ -9,34 +9,35 @@ class App:
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((640, 480))
         self.font = pygame.font.SysFont('Consolas', 40)
+        self.text = ""
+
+    def update(self):
+        self.text = str(datetime.datetime.now())
+
 
     def draw(self):
-        s = str(datetime.datetime.now())
-        img = self.font.render(s, True, (255,0,0))
+        img = self.font.render(self.text, True, (255,0,0))
         self.screen.fill((0,0,0))
         self.screen.blit(img, (10, 10))
 
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
 
     async def run(self):
         while self.running:
-            elapsed_time = self.clock.tick(60)
-            dt = elapsed_time / 1000.0  # Convert to seconds
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-                    
+            self.clock.tick(60)
+            self.handle_events()
+            self.update()
             self.draw()
             pygame.display.flip()
             await asyncio.sleep(0)
         pygame.quit()
 
-   
-
 def main():
     app = App()
     asyncio.run(app.run())
-
 
 if __name__ == "__main__":
     main()
