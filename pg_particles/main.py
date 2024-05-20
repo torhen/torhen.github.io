@@ -38,7 +38,7 @@ class App:
         self.font_size = 16
         self.font = pygame.font.SysFont('Consolas', self.font_size)
         self.circle_list = []
-        self.add_circles(1000)
+        self.add_circles(1000, self.screen.get_width() / 2, self.screen.get_height() / 2)
 
 
     def __del__(self):
@@ -49,18 +49,16 @@ class App:
         return len(self.circle_list)
 
 
-    def add_circles(self, n):
+    def add_circles(self, n, x_start, y_start):
           for i in range(n):
-            x = random.randint(0, self.screen.get_width())
-            y = random.randint(0, self.screen.get_height())
-            dx = random.randint(-10, 10)
-            dy = random.randint(-10, 10)
+            dx = random.uniform(-5, 5)
+            dy = random.uniform(-5, 5)
             if dx == 0 and dy == 0: # no fix points
                 dx, dy = 1, 1
 
         
             color = (random.randint(0,255), random.randint(0,255), random.randint(0, 255))
-            circle = Circle(self, x, y, 3, dx, dy, color)
+            circle = Circle(self, x_start, y_start, 3, dx, dy, color)
             self.circle_list.append(circle)
 
     def handle_events(self):
@@ -68,7 +66,8 @@ class App:
             if event.type == pygame.QUIT:
                 self.running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                self.add_circles(500)
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                self.add_circles(500, mouse_x, mouse_y)
                 
     def update(self):
         for circle in self.circle_list:
