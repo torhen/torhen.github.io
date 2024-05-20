@@ -35,41 +35,64 @@ class App:
         self.running = True
         self.bg_color = (0, 0, 0)
         self.font_color = (255, 255, 255)
-        self.font = pygame.font.SysFont('Consolas', 16)
-
+        self.font_size = 16
+        self.font = pygame.font.SysFont('Consolas', self.font_size)
         self.circle_list = []
-        for i in range(1000):
-            x = random.randint(0, self.screen.get_width())
-            y = random.randint(0, self.screen.get_height())
-            dx = random.randint(-10, 10)
-            dy = random.randint(-10, 10)
-            r = 5
-            color = (random.randint(0,255), random.randint(0,255), random.randint(0, 255))
-            circle = Circle(self, x, y, r, dx, dy, color)
-            self.circle_list.append(circle)
+        self.add_circles(1000)
+
 
     def __del__(self):
         pygame.quit()
         print('bye')
 
+    def get_particle_count(self):
+        return len(self.circle_list)
+
+
+    def add_circles(self, n):
+          for i in range(n):
+            x = random.randint(0, self.screen.get_width())
+            y = random.randint(0, self.screen.get_height())
+            dx = random.randint(-10, 10)
+            dy = random.randint(-10, 10)
+            if dx == 0 and dy == 0: # no fix points
+                dx, dy = 1, 1
+
+        
+            color = (random.randint(0,255), random.randint(0,255), random.randint(0, 255))
+            circle = Circle(self, x, y, 3, dx, dy, color)
+            self.circle_list.append(circle)
+
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                self.add_circles(500)
+                
     def update(self):
         for circle in self.circle_list:
             circle.update()
+
+    def draw_info(self):
+        # fps info
+        fps_meas = 'fps:' + str(round(self.clock.get_fps(),1))
+        img = self.font.render(fps_meas, False, self.font_color)
+        self.screen.blit(img, (10, self.font_size))
+        # particles info
+        img = self.font.render(f'particles: {len(self.circle_list)}', False, self.font_color)
+        self.screen.blit(img, (10, self.font_size * 2))
+        # click
+        img = self.font.render(f'Click to add particles', False, self.font_color)
+        self.screen.blit(img, (10, self.font_size * 3))
+
 
     def draw(self):
         self.screen.fill(self.bg_color)
         for circle in self.circle_list:
             circle.draw()
+        self.draw_info()
 
-        # fps info
-        fps_meas = 'fps:' + str(round(self.clock.get_fps(), 1))
-        img = self.font.render(fps_meas, False, self.font_color)
-        self.screen.blit(img, (10, 10))
         pygame.display.flip()
 
     async def run(self):
