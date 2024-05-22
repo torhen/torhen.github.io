@@ -1,6 +1,7 @@
 import pygame
 import asyncio
 import random
+import math
 
 class Circle():
     def __init__(self, app, x, y, r, dx, dy, color):
@@ -48,15 +49,12 @@ class App:
     def get_particle_count(self):
         return len(self.circle_list)
 
-
     def add_circles(self, n, x_start, y_start):
           for i in range(n):
-            dx = random.uniform(-5, 5)
-            dy = random.uniform(-5, 5)
-            if dx == 0 and dy == 0: # no fix points
-                dx, dy = 1, 1
-
-        
+            r = random.uniform(0.5, 5)
+            w = random.uniform(0, 2 * math.pi)
+            dx = r * math.cos(w)
+            dy = r * math.sin(w)
             color = (random.randint(0,255), random.randint(0,255), random.randint(0, 255))
             circle = Circle(self, x_start, y_start, 3, dx, dy, color)
             self.circle_list.append(circle)
