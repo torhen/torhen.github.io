@@ -34,6 +34,10 @@ class App:
             self.draw()
             await asyncio.sleep(0)
 
-
+ 
 app = App()
-app.run()
+# for browser
+app.run() 
+
+# for python
+# asyncio.run(app.run())
