@@ -36,7 +36,7 @@ class App:
         self.running = True
         self.bg_color = (0, 0, 0)
         self.font_color = (255, 255, 255)
-        self.font_size = 16
+        self.font_size = 32
         self.font = pygame.font.SysFont('Consolas', self.font_size)
         self.circle_list = []
         self.add_circles(1000, self.screen.get_width() / 2, self.screen.get_height() / 2)
