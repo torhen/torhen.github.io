@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pyodide Pygame Example</title>
+    
+    <!-- key events not working -->
+    <!-- <script src="https://cdn.jsdelivr.net/pyodide/v0.26.0/full/pyodide.js"></script> -->
+     
+    <script src="https://ryanking13.github.io/pyodide-pygame-demo/dist/pyodide.js"></script>
+</head>
+<body>
+
+    <script type="text/javascript">
+        async function main(){
+          let pyodide = await loadPyodide();
+          await pyodide.loadPackage(["pygame-ce"], { checkIntegrity: false })
+
+          canvas = document.getElementById("canvas");
+          pyodide.canvas.setCanvas2D(canvas);
+          
+           pyodide.runPythonAsync(await (await fetch("script.py")).text());
+        }
+  
+        main()
+      </script>
+
+<div class="demo">
+    <div class="demo-header">Simple Calculator</div>
+    <div class="demo-content">
+        <canvas id="canvas"></canvas>
+    </div>
+</div>
+
+</body>
+</html>
