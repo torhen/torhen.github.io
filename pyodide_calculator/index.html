@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
+  </head>
+
+  <body>
+    <input id="input" size='50' value="sin(pi/2)">
+    <button id="button1">run</button>
+    <br>
+    <p id="output" cols="50"></p>
+
+    <script>
+
+      document.getElementById("button1").addEventListener("click", runPython)
+
+      // init Pyodide
+      async function main() {
+        let pyodide = await loadPyodide();
+        document.getElementById("output").innerHTML = 'ready'
+        return pyodide
+      }
+      document.getElementById("output").innerHTML = 'init pyodite...'
+      let pyodideReadyPromise = main();
+
+
+      async function runPython() {
+        let pyodide = await pyodideReadyPromise;
+        pyodide.runPython(await (await fetch("script.py")).text())
+      }
+
+    </script>
+  </body>
+</html>
