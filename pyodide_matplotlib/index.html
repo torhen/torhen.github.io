@@ -15,6 +15,7 @@
       // init Pyodide
       async function main() {
         let pyodide = await loadPyodide();
+        await pyodide.loadPackage(["matplotlib"]);
         document.getElementById("output").innerHTML = 'pyodide ready'
         return pyodide
       }
@@ -24,7 +25,7 @@
       
       async function runPython() {
         let pyodide = await pyodideReadyPromise;
-        await pyodide.loadPackage(["matplotlib"]);
+        
         pyodide.runPython(await (await fetch("script.py")).text())
       }
     </script>
