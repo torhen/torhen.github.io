@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
+  </head>
+
+  <body>
+    <button id="button1">run</button>
+    <p id="output"></p>
+    <img id="img1">
+
+    <script>
+      document.getElementById("button1").addEventListener("click", runPython)
+
+      // init Pyodide
+      async function main() {
+        let pyodide = await loadPyodide();
+        document.getElementById("output").innerHTML = 'pyodide ready'
+        return pyodide
+      }
+      document.getElementById("output").innerHTML = 'loading pyodide...'
+      let pyodideReadyPromise = main();
+
+      
+      async function runPython() {
+        let pyodide = await pyodideReadyPromise;
+        await pyodide.loadPackage(["matplotlib"]);
+        pyodide.runPython(await (await fetch("script.py")).text())
+      }
+    </script>
+  </body>
+</html>
