@@ -10,16 +10,17 @@ import js
 
 status1 = js.document.getElementById("status1")
 status1.innerHTML = "ready."
-iMyPlot = js.document.getElementById("img1")
+img1 = js.document.getElementById("img1")
 button1 = js.document.getElementById("button1")
 
 k = 0
-fig = 0
+fig, ax = plt.subplots()
 
 def make_plot(para=0):
     global k, fig
 
-    fig, ax = plt.subplots()
+ 
+    plt.cla()
     ax.plot([math.sin(x * math.pi / 50 + k) for x in range(100)])
     k = k + 0.1
 
@@ -30,23 +31,10 @@ def make_plot(para=0):
     imgdata = img.read()
 
     # Set the image data to the src attribute of iMyPlot
-    iMyPlot.setAttribute("src", "data:image/svg+xml;base64," + base64.b64encode(imgdata.encode()).decode("ascii"))
+    img1.setAttribute("src", "data:image/svg+xml;base64," + base64.b64encode(imgdata.encode()).decode("ascii"))
 
 
-    
-
-
-    # Close the figure to free memory
-    try:
-        plt.close(fig) # gives an error message, but deletes the figure
-    except:
-        print('open figures', len(plt.get_fignums()))
 
 
 proxy_make_plot = create_proxy(make_plot)
-
-# button1.addEventListener('click', proxy_make_plot)
-# window.setInterval(proxy_make_plot, 500)
-
 set_interval(make_plot, 40)
-make_plot(0)
