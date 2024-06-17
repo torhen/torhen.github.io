@@ -1,33 +1,22 @@
 <!doctype html>
 <html>
   <head>
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
+      <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
   </head>
-
   <body>
+    <p id="status1">loading pyodide...</p>
     <button id="button1">run</button>
-    <p id="output"></p>
     <img id="img1">
 
-    <script>
-      document.getElementById("button1").addEventListener("click", runPython)
-
-      // init Pyodide
-      async function main() {
+    <script type="text/javascript">
+      async function main(){
+        console.log('loading pyodide...')
         let pyodide = await loadPyodide();
-        await pyodide.loadPackage(["matplotlib"]);
-        document.getElementById("output").innerHTML = 'pyodide ready'
-        return pyodide
-      }
-      document.getElementById("output").innerHTML = 'loading pyodide...'
-      let pyodideReadyPromise = main();
-
-      
-      async function runPython() {
-        let pyodide = await pyodideReadyPromise;
-        
+        await pyodide.loadPackage(['matplotlib']);
+        console.log('ready')
         pyodide.runPython(await (await fetch("script.py")).text())
       }
+      main();
     </script>
   </body>
 </html>
