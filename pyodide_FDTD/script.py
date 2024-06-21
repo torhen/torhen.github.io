@@ -262,23 +262,12 @@ def loop(T, IE, JE, dt, ez, dz, hx, hy, ihx, ihy, ga, gi2, gi3, fi1, fi2, fi3, g
     # Caluculate the Hy field
     hy, ihy = calc_hy(hy, ihy, IE, JE, ez, fj1, fi2, fj3)
 
-
-
     return T, IE, JE, dt,ez, dz, hx, hy, ihx, ihy, ga, gi2, gi3, fi1, fi2, fi3, gj2, gj3, fj1, fj2, fj3, ca, cb
-
-
-
 
 def step(para=0):
     global sys_state
-    step_count = sys_state[0]
-    if step_count > 300:
-        js.document.getElementById('status1').innerHTML = 'stop because of too much memory'
-        return
-
     sys_state = loop(*sys_state)
     show(*sys_state)
-    step = sys_state[0]
 
 
 plt.figure(figsize=(10,10))
