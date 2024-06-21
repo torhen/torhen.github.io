@@ -228,7 +228,7 @@ def loop(T, IE, JE, dt, ez, dz, hx, hy, ihx, ihy, ga, gi2, gi3, fi1, fi2, fi3, g
 
 
 def show(T, IE, JE, dt, ez, dz, hx, hy, ihx, ihy, ga, gi2, gi3, fi1, fi2, fi3, gj2, gj3, fj1, fj2, fj3, ca, cb):
-    plt.figure(figsize=(10,10))
+    
     plt.title(f'step={T}')
     contur = np.where(ca==1.0, 0.0, -1000.0)
     plt.imshow(ez + contur, vmin=-0.3, vmax=0.3)
@@ -281,7 +281,7 @@ def step(para=0):
     step = sys_state[0]
 
 
-
+plt.figure(figsize=(10,10))
 sys_state = init_sys(100, 150, npml=5)
 show(*sys_state)
 
