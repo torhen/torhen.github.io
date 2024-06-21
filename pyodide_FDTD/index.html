@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
+  </head>
+  <body>
+    <p id="status1">loading pyodide...</p>
+    <button id="button1">run</button>
+    <img id="img1">
+
+    <script type="text/javascript">
+      async function main(){
+        console.log('loading pyodide...')
+        let pyodide = await loadPyodide();
+        await pyodide.loadPackage(['matplotlib']);
+        console.log('ready')
+        pyodide.runPython(await (await fetch("script.py")).text())
+      }
+      main();
+    </script>
+  </body>
+</html>
