@@ -1,0 +1,71 @@
+<html>
+<header></header>
+<body>
+<img src="frohe.gif">
+<pre>
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
+from matplotlib.animation import FuncAnimation, PillowWriter
+import random
+import numpy as np
+
+
+class App():
+    def __init__(self):
+
+        self.figsize = (3, 2)
+        self.ratio = self.figsize[0] / self.figsize[1]
+        self.fig = plt.figure(figsize=self.figsize)
+        self.ax = self.fig.add_subplot(facecolor='darkblue')
+        self.ax.set_xlim(0, self.ratio)
+
+        # self.ax.set_axis_off()
+        self.ax.set_position([0, 0, 1, 1])
+
+        # Greeting
+        self.ax.text(x=0.5 * self.ratio, y=0.5, s="Frohe Weihnachten!", fontsize=int(self.figsize[1]*8), color='cyan', ha='center', fontname='Comic Sans MS', weight='bold')
+
+        color = (1, 1, 1, 0.7)
+        self.circs = []
+
+        for i in range(80):
+            r = 0.005
+            circ = Circle([self.ratio * random.random(), random.random()], r, facecolor=color, edgecolor=None)
+            self.ax.add_patch(circ)
+            self.circs.append(circ)
+
+
+        for _ in range(40):
+            r = 0.01
+            circ = Circle([self.ratio * random.random(), random.random()], r, facecolor=color, edgecolor=None)
+            self.ax.add_patch(circ)
+            self.circs.append(circ)
+
+        for _ in range(20):
+            r = 0.02
+            circ = Circle([self.ratio * random.random(), random.random()], r, facecolor=color, edgecolor=None)
+            self.ax.add_patch(circ)
+            self.circs.append(circ)
+
+
+        self.anim = FuncAnimation(self.fig, self.animate, interval=50, frames=200)
+
+        #Save animation as a GIF
+        self.writer = PillowWriter(fps=30)  # Adjust FPS as needed
+        self.anim.save('frohe.gif', writer=self.writer)
+        plt.show()
+
+    def animate(self, frame):
+        for circ in self.circs:
+            x, y = circ.center
+            r = circ.radius
+            y = y - r
+            if y < 0:
+                y = y + 1.0
+            circ.set_center([x, y])
+App()
+
+
+</pre>
+</body>
+</html>
