@@ -37,7 +37,7 @@ class App:
         l2, = self.ax.plot(x, y2 + f * y3, color='red')
         l3, = self.ax.plot(x, f * y3, color='red', linestyle='dotted')
 
-        s = r"$\pm \sqrt{1 - x^2} + " + f"{f:.2f}" + r"\cdot \sqrt{|x|}$"
+        s = r"$y = \pm \sqrt{1 - x^2} + " + f"{f:.2f}" + r"\cdot \sqrt{|x|}$"
         self.ax.set_title(s, fontsize=8)
 
         self.lines = [l1, l2, l3]
