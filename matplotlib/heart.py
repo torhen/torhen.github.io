@@ -16,7 +16,7 @@ class App:
         self.ax.axvline(0, color='black', linewidth=1, linestyle='--')  # Zero x-axis
         self.lines = []
 
-        self.anim = FuncAnimation(self.fig, self.animate, interval=10, frames=200, repeat=True)
+        self.anim = FuncAnimation(self.fig, self.animate, interval=10, frames=300, repeat=True)
 
         # Save animation as a GIF
         self.writer = PillowWriter(fps=30)  # Adjust FPS as needed
@@ -24,7 +24,10 @@ class App:
         plt.show()
 
     def animate(self, frame):
-        f = min(frame / 100, 1.)
+
+        f = (frame - 100) / 100 # make small delay
+        if f < 0: f = 0
+        if f > 1: f = 1
 
         x = np.linspace(-1, 1, 200)
         y1 =    np.sqrt(1 - x**2) 
@@ -37,7 +40,12 @@ class App:
         l2, = self.ax.plot(x, y2 + f * y3, color='red')
         l3, = self.ax.plot(x, f * y3, color='red', linestyle='dotted')
 
-        s = r"$y = \pm \sqrt{1 - x^2} + " + f"{f:.2f}" + r"\cdot \sqrt{|x|}$"
+        if f > 0:
+            part = f"+ ${f:.2f}" + r"\cdot \sqrt{|x|}$" # show only if f > 0
+        else:
+            part = ''
+
+        s = r"$y = \pm \sqrt{1 - x^2}$" + part
         self.ax.set_title(s, fontsize=8)
 
         self.lines = [l1, l2, l3]
