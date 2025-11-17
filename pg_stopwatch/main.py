@@ -5,10 +5,37 @@ import asyncio
 # pygbag --ume_block=0 .
 
 
+class Button:
+    def __init__(self, parent, caption, x, y, dx, dy, color, func, fontsize):
+        self.parent = parent
+        self.caption = caption
+        self.rect = (x ,y, dx, dy)
+        self.x, self.y, self.dx, self.dy = x, y, dx, dy
+        self.color = color
+        self.func = func
+        self.font = pg.font.Font(None, fontsize)
+
+    def draw(self, screen):
+        pg.draw.rect(screen, self.color, self.rect)
+        text = self.font.render(self.caption, True, (0,0,0))
+        x = (self.dx - text.get_width()) / 2
+        y = (self.dy - text.get_height()) / 2
+        screen.blit(text, (self.x + x, self.y + y))
+
+    def handle_event(self, e):
+        if e.type == pg.MOUSEBUTTONDOWN:
+            if e.button == 1:  # Left mouse button
+                mouse_pos = e.pos
+                # # Check if it is inside the button
+                r = pg.Rect(self.x, self.y, self.dx, self.dy)
+                if r.collidepoint(mouse_pos):
+                    self.func()
+
+
 class App:
     def __init__(self):
         pg.init()
-        self.screen = pg.display.set_mode((640, 480))
+        self.screen = pg.display.set_mode((640, 300))
         self.clock = pg.time.Clock()
         self.font = pg.font.Font(None, 100)
         self.running = True
@@ -16,6 +43,11 @@ class App:
         self.start_time = time.time()
         self.cur_time = 0
         self.clamp = -1
+
+        button_dx = 200
+        button_dy = 70
+        self.b1 = Button(self, 'Reset', 50, 200, button_dx, button_dy, (255,255,255), self.reset, 40)
+        self.b2 = Button(self, 'Start/Stop', self.screen.get_width()-50-button_dx, 200, button_dx, button_dy, (255,255,255), self.pause, 40)
 
     async def run(self):
         while self.running:
@@ -28,6 +60,9 @@ class App:
                         self.reset()
                     if e.key == pg.K_p:
                         self.pause()
+
+                self.b1.handle_event(e)
+                self.b2.handle_event(e)
 
                 
             self.update()
@@ -54,9 +89,12 @@ class App:
         text = self.font.render(out, True, (0,0,0))
 
         x = (self.screen.get_width() - text.get_width())/2
-        y = (self.screen.get_height() - text.get_height())/2
+        y = 70
 
         self.screen.blit(text, (x, y))
+
+        self.b1.draw(self.screen)
+        self.b2.draw(self.screen)
         pg.display.flip()
         self.clock.tick(60)
 
