@@ -31,6 +31,28 @@ class Button:
                 if r.collidepoint(mouse_pos):
                     self.func()
 
+class Timer():
+    def __init__(self):
+        self.start_time = time.time()
+        self.cur_time = 0
+        self.clamp = -1
+
+    def update(self):
+        self.cur_time = time.time() - self.start_time
+
+        if self.clamp >= 0:
+            delta = self.cur_time -self.clamp
+            self.start_time = self.start_time + delta
+
+    def pause(self):
+        if self.clamp < 0:
+            self.clamp = self.cur_time
+        else:
+            self.clamp = -1
+
+    def reset(self):
+        self.start_time = time.time()
+        self.clamp=0
 
 class App:
     def __init__(self):
@@ -40,14 +62,11 @@ class App:
         self.font = pg.font.Font(None, 100)
         self.running = True
 
-        self.start_time = time.time()
-        self.cur_time = 0
-        self.clamp = -1
-
+        self.timer = Timer()
         button_dx = 200
         button_dy = 70
-        self.b1 = Button(self, 'Reset', 50, 200, button_dx, button_dy, (255,255,255), self.reset, 40)
-        self.b2 = Button(self, 'Start/Stop', self.screen.get_width()-50-button_dx, 200, button_dx, button_dy, (255,255,255), self.pause, 40)
+        self.b1 = Button(self, caption='Reset',      x =50,                                  y=200, dx=button_dx, dy=button_dy, color=(255,255,255), func=self.timer.reset, fontsize=40)
+        self.b2 = Button(self, caption='Start/Stop', x=self.screen.get_width()-50-button_dx, y=200, dx=button_dx, dy=button_dy, color=(255,255,255), func=self.timer.pause, fontsize=40)
 
     async def run(self):
         while self.running:
@@ -70,17 +89,12 @@ class App:
             await asyncio.sleep(0)
 
     def update(self):
-        self.cur_time = time.time() - self.start_time
-
-        if self.clamp >= 0:
-            delta = self.cur_time -self.clamp
-            self.start_time = self.start_time + delta
-
+        self.timer.update()
 
     def draw(self):
         self.screen.fill((200,200,200))
 
-        t = int(self.cur_time)
+        t = int(self.timer.cur_time)
         h, r = divmod(t, 3600)
         m, r = divmod(r, 60)
         s = r
@@ -97,16 +111,6 @@ class App:
         self.b2.draw(self.screen)
         pg.display.flip()
         self.clock.tick(60)
-
-    def pause(self):
-        if self.clamp < 0:
-            self.clamp = self.cur_time
-        else:
-            self.clamp = -1
-
-    def reset(self):
-        self.start_time = time.time()
-        self.clamp=0
 
 
 async def main():
