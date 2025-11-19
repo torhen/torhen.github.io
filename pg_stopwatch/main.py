@@ -106,7 +106,7 @@ class App:
         text = self.font.render(out, True, (0,0,0))
         x = (self.screen.get_width() - text.get_width())/2
         y = 30
-        if self.timer.clamp > 0: # blinking
+        if self.timer.clamp >= 0: # blinking
             if int(time.time() * 10) % 10 > 5:
                 self.screen.blit(text, (x, y))
         else: # not blinking
