@@ -119,8 +119,5 @@ class App:
         self.clock.tick(60)
 
 
-async def main():
-    app = App()
-    await app.run()
-
-asyncio.run(main())
+app = App()
+asyncio.run(app.run())
