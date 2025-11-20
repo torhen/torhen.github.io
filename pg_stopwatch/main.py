@@ -3,7 +3,8 @@ import time
 import asyncio
 
 # pygbag --ume_block=0 .
-
+WIDTH = 5*400
+HEIGHT = 5*250
 
 class Button:
     def __init__(self, parent, caption, x, y, dx, dy, color, func, fontsize):
@@ -57,18 +58,19 @@ class Timer():
 class App:
     def __init__(self):
         pg.init()
-        self.screen = pg.display.set_mode((400, 250))
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption("Stopwatch")
         self.clock = pg.time.Clock()
-        self.font = pg.font.Font(None, 125)
+        self.font = pg.font.Font(None, HEIGHT // 2)
         self.running = True
 
         self.timer = Timer()
-        button_dx = 150
-        button_dy = 70
-        y = 140
-        self.b1 = Button(self, caption='Reset',      x =25,                                  y=y, dx=button_dx, dy=button_dy, color=(255,255,255), func=self.timer.reset, fontsize=40)
-        self.b2 = Button(self, caption='Start/Stop', x=self.screen.get_width()-25-button_dx, y=y, dx=button_dx, dy=button_dy, color=(255,255,255), func=self.timer.pause, fontsize=40)
+        button_dx = WIDTH // 2.5
+        button_dy = HEIGHT // 4
+        x = WIDTH // 20
+        y = HEIGHT // 1.7
+        self.b1 = Button(self, caption='Reset',      x =x,                                  y=y, dx=button_dx, dy=button_dy, color=(255,255,255), func=self.timer.reset, fontsize=WIDTH//10)
+        self.b2 = Button(self, caption='Start/Stop', x=self.screen.get_width()-x-button_dx, y=y, dx=button_dx, dy=button_dy, color=(255,255,255), func=self.timer.pause, fontsize=WIDTH//10)
 
     async def run(self):
         while self.running:
@@ -105,7 +107,7 @@ class App:
         out = f"{h:02}:{m:02}:{s:02}"
         text = self.font.render(out, True, (0,0,0))
         x = (self.screen.get_width() - text.get_width())/2
-        y = 30
+        y = HEIGHT // 10
         if self.timer.clamp >= 0: # blinking
             if int(time.time() * 10) % 10 > 5:
                 self.screen.blit(text, (x, y))
