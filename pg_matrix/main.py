@@ -81,8 +81,8 @@ class Doc:
 
 class App:
     def __init__(self):
-        self.window_width = 2*800
-        self.window_height = 2*600
+        self.window_width = 1600
+        self.window_height = int(self.window_width * 9 / 16)
         self.fontsize = 2 * 10
         self.raster_x = self.fontsize * 1
         self.raster_y = self.fontsize * 1
