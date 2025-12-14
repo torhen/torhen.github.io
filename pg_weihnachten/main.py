@@ -2,15 +2,17 @@ import pygame as pg
 import random
 import asyncio
 
+SCREEN_WIDTH = 1200
+
 class Writing:
     def __init__(self, app):
         self.app = app
         self.text1 = "Frohe"
         self.text2 = "Weihnachten"
-        self.font = pg.font.SysFont("Roman", 110)
+        self.font = pg.font.SysFont("Roman", SCREEN_WIDTH // 7)
         self.sur1 = self.font.render(self.text1, True, (0, 200, 0))
         self.sur2 = self.font.render(self.text2, True, (0, 200, 0))
-        self.z = 1000
+        self.z = SCREEN_WIDTH * 100 # always background
 
     def update(self):
         pass
@@ -38,26 +40,26 @@ class Flake:
         self.app = app
 
 
-        self.x = random.uniform(0, 500)
-        self.y = random.uniform(0, 500)
-        self.z = random.uniform(20, 500)
-        self.r = 1
-        self.dx = random.uniform(-0.5,0.5) # flake go slighly tilted down (wind)
-        self.dy = 1
+        self.x = random.uniform(0, SCREEN_WIDTH)
+        self.y = random.uniform(0, SCREEN_WIDTH)
+        self.z = random.uniform(SCREEN_WIDTH /30, SCREEN_WIDTH)
+        self.r = SCREEN_WIDTH  /500
+        self.dx = random.uniform(-SCREEN_WIDTH/1500, SCREEN_WIDTH/1500) # flake go slighly tilted down (wind)
+        self.dy = SCREEN_WIDTH / 500
 
 
     def update(self):
         self.x = self.x + self.dx
         self.y = self.y + self.dy
 
-        if self.y > 500:
+        if self.y > SCREEN_WIDTH:
             self.y = 0
 
-        if self.x > 500:
+        if self.x >SCREEN_WIDTH:
             self.x =  0
         
         if self.x < 0:
-            self.x =  500
+            self.x =  SCREEN_WIDTH
 
     def draw(self):
         xs = self.x / self.z * self.app.screen.get_width()
@@ -69,7 +71,7 @@ class Flake:
 class App:
     def __init__(self):
         pg.init()
-        self.screen = pg.display.set_mode((640, 480), pg.RESIZABLE)
+        self.screen = pg.display.set_mode((SCREEN_WIDTH , SCREEN_WIDTH * 3 // 4 ), pg.RESIZABLE)
         self.clock = pg.time.Clock()
         self.running = True
         pg.display.set_caption('Xmas')
